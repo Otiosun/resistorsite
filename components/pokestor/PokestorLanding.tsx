@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import {
+  ArrowDown,
   ArrowRight,
   Award,
   BookOpen,
@@ -196,7 +197,7 @@ function TopNav() {
 
         <div className="pointer-events-auto flex items-center gap-3">
           <a
-            href="#universo"
+            href="#orbita"
             aria-label="Ir para a órbita principal"
             className="pixel-cut flex h-12 w-12 items-center justify-center border bg-black/25 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-fuchsia-300/80"
             style={{
@@ -328,8 +329,8 @@ function OrbitBackdrop() {
 
 function GalaxyCore({ compact = false }: { compact?: boolean }) {
   const wrapperClassName = compact
-    ? "absolute left-1/2 top-1/2 h-[20rem] w-[22rem] -translate-x-1/2 -translate-y-1/2 sm:h-[24rem] sm:w-[28rem]"
-    : "absolute left-1/2 top-[46%] h-[30rem] w-[50rem] -translate-x-1/2 -translate-y-1/2"
+    ? "absolute left-1/2 top-[49%] h-[20rem] w-[22rem] -translate-x-1/2 -translate-y-1/2 sm:h-[24rem] sm:w-[28rem]"
+    : "absolute left-1/2 top-[42%] h-[28rem] w-[46rem] -translate-x-1/2 -translate-y-1/2"
 
   return (
     <motion.div
@@ -360,7 +361,14 @@ function GalaxyCore({ compact = false }: { compact?: boolean }) {
             <stop offset="0.66" stopColor="#c084fc" />
             <stop offset="1" stopColor="#60a5fa" />
           </linearGradient>
-          <radialGradient id="core-glow" cx="0" cy="0" r="1" gradientTransform="translate(500 280) rotate(90) scale(280 430)" gradientUnits="userSpaceOnUse">
+          <radialGradient
+            id="core-glow"
+            cx="0"
+            cy="0"
+            r="1"
+            gradientTransform="translate(500 280) rotate(90) scale(280 430)"
+            gradientUnits="userSpaceOnUse"
+          >
             <stop stopColor="rgba(30, 41, 59, 0.2)" />
             <stop offset="0.56" stopColor="rgba(12, 7, 28, 0.95)" />
             <stop offset="1" stopColor="rgba(4, 2, 13, 0)" />
@@ -424,22 +432,39 @@ function GalaxyCore({ compact = false }: { compact?: boolean }) {
 function HeroBrand({ activeFeature, compact = false }: { activeFeature: Feature; compact?: boolean }) {
   return (
     <motion.div
-      className={`relative z-10 mx-auto flex max-w-[42rem] flex-col items-center text-center ${
-        compact ? "px-4" : "absolute left-1/2 top-[47%] w-full -translate-x-1/2 -translate-y-1/2 px-6"
+      className={`relative z-10 mx-auto flex max-w-[48rem] flex-col items-center text-center ${
+        compact ? "px-4" : "px-6"
       }`}
       initial={{ opacity: 0, y: 18 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1, delay: 0.25 }}
     >
+      <div
+        className="mb-5 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[0.56rem] uppercase tracking-[0.22em]"
+        style={{
+          borderColor: hexToRgba(activeFeature.color, 0.4),
+          background: "rgba(12, 8, 24, 0.7)",
+          color: activeFeature.color,
+          boxShadow: `0 0 18px ${hexToRgba(activeFeature.color, 0.12)}`,
+        }}
+      >
+        <Sparkles className="h-3.5 w-3.5" strokeWidth={1.8} />
+        <span className="font-display">{activeFeature.eyebrow}</span>
+      </div>
+
       <div className="relative">
         <div
           aria-hidden="true"
-          className="absolute inset-0 translate-y-2 scale-[1.02] font-brand text-[clamp(4rem,11vw,8.4rem)] uppercase tracking-[0.08em] text-fuchsia-400/20 blur-[4px]"
+          className={`absolute inset-0 translate-y-2 scale-[1.02] font-brand uppercase tracking-[0.08em] text-fuchsia-400/20 blur-[4px] ${
+            compact ? "text-[clamp(3.35rem,16vw,5.6rem)]" : "text-[clamp(4.8rem,10vw,7.8rem)]"
+          }`}
         >
           POKESTOR
         </div>
         <h1
-          className="relative font-brand text-[clamp(4rem,11vw,8.4rem)] uppercase leading-none tracking-[0.08em] text-transparent"
+          className={`relative font-brand uppercase leading-none tracking-[0.08em] text-transparent ${
+            compact ? "text-[clamp(3.35rem,16vw,5.6rem)]" : "text-[clamp(4.8rem,10vw,7.8rem)]"
+          }`}
           style={{
             backgroundImage: "linear-gradient(180deg, #faf5ff 0%, #86e3ff 26%, #8ec5ff 40%, #f0a6ff 72%, #9a56ff 100%)",
             WebkitBackgroundClip: "text",
@@ -453,17 +478,24 @@ function HeroBrand({ activeFeature, compact = false }: { activeFeature: Feature;
         </h1>
       </div>
 
-      <div className="mt-2 flex items-center gap-3 text-fuchsia-200/75">
-        <span className="h-px w-10 bg-gradient-to-r from-transparent via-fuchsia-300/80 to-transparent" />
+      <div className="mt-3 flex items-center gap-3 text-fuchsia-200/75">
+        <span className="h-px w-12 bg-gradient-to-r from-transparent via-fuchsia-300/80 to-transparent" />
         <span className="rounded-full border border-fuchsia-300/45 px-2 py-1">
           {featureIcon(activeFeature.id, "h-3.5 w-3.5")}
         </span>
-        <span className="h-px w-10 bg-gradient-to-r from-transparent via-cyan-300/80 to-transparent" />
+        <span className="h-px w-12 bg-gradient-to-r from-transparent via-cyan-300/80 to-transparent" />
       </div>
 
-      <p className="mt-5 max-w-[34rem] font-display text-[0.64rem] uppercase tracking-[0.28em] text-cyan-200/75 sm:text-[0.72rem]">
-        SUA AVENTURA. SEUS MONSTROS. SUA HISTÓRIA.
+      <p className="mt-6 max-w-[36rem] font-display text-[0.64rem] uppercase tracking-[0.28em] text-cyan-200/75 sm:text-[0.72rem]">
+        SUA AVENTURA. SEUS MONSTROS. SUA HISTORIA.
       </p>
+
+      {!compact && (
+        <p className="mt-6 max-w-[44rem] text-balance text-lg leading-8 text-slate-200/76">
+          A base ficou forte. Agora a navegacao respira melhor: identidade e convite ficam no topo, e a orbita
+          ganha um palco proprio logo abaixo.
+        </p>
+      )}
 
       <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
         {elementRunes.map(({ Icon, color }, index) => (
@@ -485,6 +517,91 @@ function HeroBrand({ activeFeature, compact = false }: { activeFeature: Feature;
         ))}
       </div>
     </motion.div>
+  )
+}
+
+function WelcomeModule({ activeFeature, className = "" }: { activeFeature: Feature; className?: string }) {
+  return (
+    <motion.section
+      id="jornada"
+      className={`pixel-cut relative overflow-hidden border px-6 py-6 text-center ${className}`}
+      style={{
+        borderColor: hexToRgba(activeFeature.color, 0.52),
+        background: "linear-gradient(180deg, rgba(14, 10, 29, 0.96) 0%, rgba(7, 6, 19, 0.9) 100%)",
+        boxShadow: `0 0 34px ${hexToRgba(activeFeature.color, 0.16)}, inset 0 0 0 1px rgba(255,255,255,0.05)`,
+      }}
+      initial={{ opacity: 0, y: 18 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.85, delay: 0.5 }}
+    >
+      <div
+        className="absolute inset-0 opacity-25"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)",
+          backgroundSize: "100% 100%, 26px 26px",
+        }}
+      />
+      <div
+        className="absolute inset-x-10 top-0 h-px"
+        style={{
+          background: `linear-gradient(90deg, transparent 0%, ${hexToRgba(activeFeature.color, 0.74)} 50%, transparent 100%)`,
+        }}
+      />
+      <div className="relative">
+        <div className="mb-4 flex items-center justify-center gap-2" style={{ color: activeFeature.color }}>
+          <Sparkles className="h-4 w-4" strokeWidth={1.85} />
+          <p className="font-display text-[0.62rem] uppercase tracking-[0.22em]">Bem-vindo, treinador</p>
+        </div>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeFeature.id}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+          >
+            <p className="mx-auto max-w-[22rem] font-terminal text-[1.9rem] leading-[1.02] text-slate-50 sm:text-[2.15rem]">
+              {activeFeature.description}
+            </p>
+            <p className="mx-auto mt-3 max-w-[22rem] text-sm leading-6 text-slate-200/72 sm:text-base">
+              {activeFeature.detail}
+            </p>
+          </motion.div>
+        </AnimatePresence>
+
+        <div className="mt-5 flex items-center justify-center gap-3 text-fuchsia-100/70">
+          <span className="h-px w-12 bg-fuchsia-300/35" />
+          <span
+            className="inline-flex h-7 w-7 items-center justify-center rounded-full border"
+            style={{
+              borderColor: hexToRgba(activeFeature.color, 0.5),
+              color: activeFeature.color,
+              background: hexToRgba(activeFeature.color, 0.08),
+            }}
+          >
+            {featureIcon(activeFeature.id, "h-3.5 w-3.5")}
+          </span>
+          <span className="h-px w-12 bg-cyan-300/35" />
+        </div>
+
+        <div className="mt-6">
+          <a
+            href="#orbita"
+            className="pixel-cut inline-flex items-center gap-3 border px-5 py-4 text-fuchsia-50 transition-transform duration-300 hover:-translate-y-0.5"
+            style={{
+              borderColor: hexToRgba(activeFeature.color, 0.66),
+              background: `linear-gradient(180deg, ${hexToRgba(activeFeature.color, 0.22)} 0%, rgba(7, 8, 22, 0.95) 100%)`,
+              boxShadow: `0 0 22px ${hexToRgba(activeFeature.color, 0.2)}, inset 0 0 0 1px rgba(255,255,255,0.06)`,
+            }}
+          >
+            <Sparkles className="h-4 w-4" strokeWidth={1.85} />
+            <span className="font-display text-[0.64rem] uppercase tracking-[0.16em]">Comecar jornada</span>
+          </a>
+        </div>
+      </div>
+    </motion.section>
   )
 }
 
@@ -608,6 +725,41 @@ function FeatureNode({
   )
 }
 
+function OrbitFocusPanel({ activeFeature }: { activeFeature: Feature }) {
+  return (
+    <motion.div
+      className="absolute bottom-8 left-1/2 hidden w-[24rem] -translate-x-1/2 lg:block"
+      initial={{ opacity: 0, y: 18 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.55 }}
+    >
+      <div
+        className="pixel-cut relative overflow-hidden border px-5 py-5 text-center"
+        style={{
+          borderColor: hexToRgba(activeFeature.color, 0.44),
+          background: "linear-gradient(180deg, rgba(12, 9, 26, 0.95) 0%, rgba(7, 6, 17, 0.86) 100%)",
+          boxShadow: `0 0 26px ${hexToRgba(activeFeature.color, 0.12)}`,
+        }}
+      >
+        <div
+          className="absolute inset-0 opacity-20"
+          style={{
+            background: `radial-gradient(circle at top center, ${hexToRgba(activeFeature.color, 0.18)} 0%, transparent 58%)`,
+          }}
+        />
+        <div className="relative">
+          <div className="flex items-center justify-center gap-2" style={{ color: activeFeature.color }}>
+            {featureIcon(activeFeature.id, "h-4 w-4")}
+            <p className="font-display text-[0.52rem] uppercase tracking-[0.18em]">{activeFeature.eyebrow}</p>
+          </div>
+          <h3 className="mt-3 font-terminal text-[1.6rem] leading-none text-white">{activeFeature.title}</h3>
+          <p className="mt-3 text-sm leading-6 text-slate-200/74">{activeFeature.detail}</p>
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
 function MobileFeatureCard({
   feature,
   active,
@@ -662,90 +814,79 @@ function MobileFeatureCard({
   )
 }
 
-function WelcomeModule({ activeFeature, mobile = false }: { activeFeature: Feature; mobile?: boolean }) {
+function DesktopLanding({
+  activeFeature,
+  onSelect,
+}: {
+  activeFeature: Feature
+  onSelect: (featureId: FeatureId) => void
+}) {
   return (
-    <motion.section
-      id="jornada"
-      className={`pixel-cut relative overflow-hidden border px-6 py-6 text-center ${
-        mobile ? "w-full max-w-xl" : "absolute bottom-8 left-1/2 w-[30rem] -translate-x-1/2"
-      }`}
-      style={{
-        borderColor: hexToRgba(activeFeature.color, 0.52),
-        background: "linear-gradient(180deg, rgba(14, 10, 29, 0.96) 0%, rgba(7, 6, 19, 0.9) 100%)",
-        boxShadow: `0 0 34px ${hexToRgba(activeFeature.color, 0.16)}, inset 0 0 0 1px rgba(255,255,255,0.05)`,
-      }}
-      initial={{ opacity: 0, y: 18 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.85, delay: 0.5 }}
-    >
-      <div
-        className="absolute inset-0 opacity-25"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)",
-          backgroundSize: "100% 100%, 26px 26px",
-        }}
-      />
-      <div
-        className="absolute inset-x-10 top-0 h-px"
-        style={{
-          background: `linear-gradient(90deg, transparent 0%, ${hexToRgba(activeFeature.color, 0.74)} 50%, transparent 100%)`,
-        }}
-      />
-      <div className="relative">
-        <div className="mb-4 flex items-center justify-center gap-2" style={{ color: activeFeature.color }}>
-          <Sparkles className="h-4 w-4" strokeWidth={1.85} />
-          <p className="font-display text-[0.62rem] uppercase tracking-[0.22em]">Bem-vindo, treinador</p>
-        </div>
+    <div className="hidden w-full flex-col items-center lg:flex">
+      <section className="flex w-full max-w-[1080px] flex-col items-center px-6 pb-10 pt-10 text-center">
+        <HeroBrand activeFeature={activeFeature} />
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeFeature.id}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
-          >
-            <p className="mx-auto max-w-[20rem] font-terminal text-[1.9rem] leading-[1.02] text-slate-50 sm:text-[2.15rem]">
-              {activeFeature.description}
-            </p>
-            <p className="mx-auto mt-3 max-w-[22rem] text-sm leading-6 text-slate-200/72 sm:text-base">
-              {activeFeature.detail}
-            </p>
-          </motion.div>
-        </AnimatePresence>
+        <WelcomeModule activeFeature={activeFeature} className="mt-10 w-full max-w-[34rem]" />
 
-        <div className="mt-5 flex items-center justify-center gap-3 text-fuchsia-100/70">
-          <span className="h-px w-12 bg-fuchsia-300/35" />
-          <span
-            className="inline-flex h-7 w-7 items-center justify-center rounded-full border"
-            style={{
-              borderColor: hexToRgba(activeFeature.color, 0.5),
-              color: activeFeature.color,
-              background: hexToRgba(activeFeature.color, 0.08),
-            }}
-          >
-            {featureIcon(activeFeature.id, "h-3.5 w-3.5")}
-          </span>
-          <span className="h-px w-12 bg-cyan-300/35" />
-        </div>
+        <a
+          href="#orbita"
+          className="mt-8 inline-flex items-center gap-2 text-[0.68rem] uppercase tracking-[0.22em] text-cyan-200/72 transition-colors hover:text-cyan-100"
+        >
+          <span className="font-display">Ver orbita</span>
+          <ArrowDown className="h-4 w-4" strokeWidth={1.8} />
+        </a>
+      </section>
 
-        <div className="mt-6">
-          <a
-            href="#universo"
-            className="pixel-cut inline-flex items-center gap-3 border px-5 py-4 text-fuchsia-50 transition-transform duration-300 hover:-translate-y-0.5"
-            style={{
-              borderColor: hexToRgba(activeFeature.color, 0.66),
-              background: `linear-gradient(180deg, ${hexToRgba(activeFeature.color, 0.22)} 0%, rgba(7, 8, 22, 0.95) 100%)`,
-              boxShadow: `0 0 22px ${hexToRgba(activeFeature.color, 0.2)}, inset 0 0 0 1px rgba(255,255,255,0.06)`,
-            }}
-          >
-            <Sparkles className="h-4 w-4" strokeWidth={1.85} />
-            <span className="font-display text-[0.64rem] uppercase tracking-[0.16em]">Começar jornada</span>
-          </a>
+      <section id="orbita" className="relative h-[54rem] w-full max-w-[1240px]">
+        <OrbitBackdrop />
+        <GalaxyCore />
+
+        {features.map((feature) => (
+          <FeatureNode
+            key={feature.id}
+            feature={feature}
+            active={feature.id === activeFeature.id}
+            onSelect={onSelect}
+          />
+        ))}
+
+        <OrbitFocusPanel activeFeature={activeFeature} />
+      </section>
+    </div>
+  )
+}
+
+function MobileLanding({
+  activeFeature,
+  onSelect,
+}: {
+  activeFeature: Feature
+  onSelect: (featureId: FeatureId) => void
+}) {
+  return (
+    <div className="flex w-full max-w-xl flex-col items-center gap-6 lg:hidden">
+      <section className="flex w-full flex-col items-center pt-4 text-center">
+        <HeroBrand activeFeature={activeFeature} compact />
+        <WelcomeModule activeFeature={activeFeature} className="mt-8 w-full" />
+      </section>
+
+      <div className="relative w-full overflow-hidden px-2 pt-2">
+        <div className="relative h-[22rem] w-full">
+          <GalaxyCore compact />
         </div>
       </div>
-    </motion.section>
+
+      <div className="grid w-full gap-3 sm:grid-cols-2">
+        {features.map((feature) => (
+          <MobileFeatureCard
+            key={feature.id}
+            feature={feature}
+            active={feature.id === activeFeature.id}
+            onSelect={onSelect}
+          />
+        ))}
+      </div>
+    </div>
   )
 }
 
@@ -769,50 +910,10 @@ export function PokestorLanding() {
 
       <div
         id="universo"
-        className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1580px] flex-col px-4 pb-12 pt-24 sm:px-6 lg:px-10"
+        className="relative z-10 mx-auto flex w-full max-w-[1580px] flex-col px-4 pb-16 pt-24 sm:px-6 lg:px-10"
       >
-        <section className="relative flex flex-1 items-center justify-center">
-          <div className="hidden h-[860px] w-full max-w-[1240px] lg:block">
-            <OrbitBackdrop />
-            <GalaxyCore />
-            <HeroBrand activeFeature={activeFeature} />
-
-            {features.map((feature) => (
-              <FeatureNode
-                key={feature.id}
-                feature={feature}
-                active={feature.id === activeFeature.id}
-                onSelect={setActiveFeatureId}
-              />
-            ))}
-
-            <WelcomeModule activeFeature={activeFeature} />
-          </div>
-
-          <div className="flex w-full max-w-xl flex-col items-center gap-6 lg:hidden">
-            <div className="relative w-full overflow-hidden px-2 pt-4">
-              <div className="relative h-[22rem] w-full">
-                <GalaxyCore compact />
-                <div className="absolute inset-x-0 top-[44%] -translate-y-1/2">
-                  <HeroBrand activeFeature={activeFeature} compact />
-                </div>
-              </div>
-            </div>
-
-            <div className="grid w-full gap-3 sm:grid-cols-2">
-              {features.map((feature) => (
-                <MobileFeatureCard
-                  key={feature.id}
-                  feature={feature}
-                  active={feature.id === activeFeature.id}
-                  onSelect={setActiveFeatureId}
-                />
-              ))}
-            </div>
-
-            <WelcomeModule activeFeature={activeFeature} mobile />
-          </div>
-        </section>
+        <DesktopLanding activeFeature={activeFeature} onSelect={setActiveFeatureId} />
+        <MobileLanding activeFeature={activeFeature} onSelect={setActiveFeatureId} />
       </div>
     </main>
   )
