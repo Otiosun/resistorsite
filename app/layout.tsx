@@ -1,38 +1,56 @@
-import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
-import './globals.css'
+import type { Metadata, Viewport } from "next"
+import { Pixelify_Sans, Press_Start_2P, Space_Grotesk, VT323 } from "next/font/google"
+import "./globals.css"
 
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const bodyFont = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-body",
+})
+
+const brandFont = Pixelify_Sans({
+  subsets: ["latin"],
+  variable: "--font-brand",
+})
+
+const displayFont = Press_Start_2P({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-display",
+})
+
+const terminalFont = VT323({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-terminal",
+})
 
 export const metadata: Metadata = {
-  title: 'Pokestor | Sua Aventura no WhatsApp',
-  description: 'Pokestor é um bot de WhatsApp inspirado em Pokémon. Capture monstros, explore regiões, complete sua Pokédex e participe de eventos com outros treinadores.',
-  generator: 'v0.app',
-  keywords: ['Pokestor', 'WhatsApp bot', 'monster collection', 'Pokémon inspired', 'adventure'],
+  title: "Pokestor | Jornada cósmica de monstros",
+  description:
+    "Landing page neon-retro para o universo Pokestor: Pokédex, captura, exploração, eventos e canal em uma experiência inspirada em aventura espacial.",
+  keywords: ["Pokestor", "landing page", "Pokédex", "captura", "exploração", "eventos", "canal"],
   icons: {
     icon: [
       {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
+        url: "/icon-light-32x32.png",
+        media: "(prefers-color-scheme: light)",
       },
       {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
+        url: "/icon-dark-32x32.png",
+        media: "(prefers-color-scheme: dark)",
       },
       {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
+        url: "/icon.svg",
+        type: "image/svg+xml",
       },
     ],
-    apple: '/apple-icon.png',
+    apple: "/apple-icon.png",
   },
 }
 
 export const viewport: Viewport = {
-  themeColor: '#0a0510',
-  width: 'device-width',
+  themeColor: "#05010e",
+  width: "device-width",
   initialScale: 1,
 }
 
@@ -43,9 +61,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className="bg-background">
-      <body className="font-sans antialiased overflow-hidden">
+      <body
+        className={`${bodyFont.variable} ${brandFont.variable} ${displayFont.variable} ${terminalFont.variable} min-h-screen bg-background font-sans antialiased text-foreground`}
+      >
         {children}
-        {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
   )
