@@ -12,7 +12,7 @@ const sourceMap = new Map([
   ["canal", "c:/Users/natan/Downloads/ChatGPT Image 15 de mai. de 2026, 00_37_11 (3).png"],
   ["pokedex", "c:/Users/natan/Downloads/ChatGPT Image 15 de mai. de 2026, 00_37_11 (2).png"],
   ["captura", "c:/Users/natan/Downloads/ChatGPT Image 15 de mai. de 2026, 00_37_11 (1).png"],
-  ["core", "c:/Users/natan/Downloads/ChatGPT Image 15 de mai. de 2026, 00_37_01.png"],
+  ["core", "c:/Users/natan/Downloads/Design sem nome (3).png"],
   ["logo", "c:/Users/natan/Downloads/cab5cf29-41ce-4ec5-a472-b6c1e88ddd9b (1).png"],
 ]);
 
