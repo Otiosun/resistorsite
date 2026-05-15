@@ -222,7 +222,7 @@ function TopNav() {
           href="#universo"
           className="pointer-events-auto inline-flex min-w-0 flex-1 items-center gap-3 text-white/90 transition-transform hover:scale-[1.02]"
         >
-          <div className="relative h-10 w-[9.8rem] min-w-0 sm:h-12 sm:w-[12.5rem] lg:w-[14rem]">
+          <div className="relative h-11 w-[11rem] min-w-0 sm:h-[3.35rem] sm:w-[13.9rem] lg:w-[15.4rem]">
             <img
               src={brandLogoPath}
               alt="Pokestor"
@@ -689,7 +689,7 @@ function HeroBrand({ activeFeature, compact = false }: { activeFeature: Feature;
         <span className="font-display">{activeFeature.eyebrow}</span>
       </div>
 
-      <div className={`relative ${compact ? "h-[6.3rem] w-[min(92vw,22rem)]" : "h-[9.5rem] w-[min(92vw,45rem)]"}`}>
+      <div className={`relative ${compact ? "h-[6.9rem] w-[min(94vw,24rem)]" : "h-[10.4rem] w-[min(94vw,49rem)]"}`}>
         <img
           src={brandLogoPath}
           alt="Pokestor"
