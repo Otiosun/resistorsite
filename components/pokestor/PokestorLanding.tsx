@@ -200,12 +200,12 @@ function TopNav() {
           href="#universo"
           className="pointer-events-auto inline-flex min-w-0 flex-1 items-center gap-3 text-white/90 transition-transform hover:scale-[1.02]"
         >
-          <div className="relative h-[4.15rem] w-[min(18rem,calc(100vw-8rem))] min-w-0 sm:h-[5.45rem] sm:w-[22.5rem] lg:h-[6rem] lg:w-[25rem]">
+          <div className="relative h-11 w-[11rem] min-w-0 overflow-visible sm:h-[3.35rem] sm:w-[13.9rem] lg:w-[15.4rem]">
             <img
               src={brandLogoPath}
               alt="Pokestor"
               draggable="false"
-              className="absolute inset-0 h-full w-full object-contain object-left drop-shadow-[0_0_12px_rgba(212,140,255,0.18)] contrast-[1.02] saturate-[1.02]"
+              className="absolute inset-0 h-full w-full origin-left scale-[1.5] object-contain object-left drop-shadow-[0_0_12px_rgba(212,140,255,0.18)] contrast-[1.02] saturate-[1.02]"
             />
           </div>
         </a>
@@ -1323,7 +1323,7 @@ export function PokestorLanding() {
 
       <div
         id="universo"
-        className="relative z-10 mx-auto flex w-full max-w-[1580px] flex-col px-4 pb-16 pt-32 sm:px-6 sm:pt-36 lg:px-10"
+        className="relative z-10 mx-auto flex w-full max-w-[1580px] flex-col px-4 pb-16 pt-28 sm:px-6 sm:pt-32 lg:px-10"
       >
         <DesktopLanding
           activeFeature={activeFeature}
