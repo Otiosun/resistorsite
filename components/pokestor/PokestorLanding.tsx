@@ -30,6 +30,7 @@ type Feature = {
   detail: string;
   color: string;
   secondary: string;
+  surface: string;
   assetPath: string;
   assetClassName?: string;
   orbit: {
@@ -50,6 +51,7 @@ const features: Feature[] = [
     detail: "Registre encontros, estude elementos e avance na sua colecao com visao estrategica.",
     color: "#d48cff",
     secondary: "#7c3aed",
+    surface: "#2d1452",
     assetPath: "pokestor-assets/pokedex.png",
     orbit: { x: 50, y: 15 },
   },
@@ -61,6 +63,7 @@ const features: Feature[] = [
     detail: "Rotas, iscas e combinacoes raras se conectam para deixar sua jornada mais afiada.",
     color: "#7df9ae",
     secondary: "#0f9f6e",
+    surface: "#0d4941",
     assetPath: "pokestor-assets/captura.png",
     assetClassName: "scale-[0.94]",
     orbit: { x: 86, y: 43 },
@@ -73,6 +76,7 @@ const features: Feature[] = [
     detail: "Cada nova area abre encontros, reliquias e objetivos para continuar expandindo o universo.",
     color: "#ffcf6d",
     secondary: "#c58620",
+    surface: "#62410e",
     assetPath: "pokestor-assets/exploracao.png",
     assetClassName: "scale-[0.96]",
     orbit: { x: 74, y: 79 },
@@ -85,6 +89,7 @@ const features: Feature[] = [
     detail: "O canal reune treinadores, guias rapidos e convites para os momentos mais importantes.",
     color: "#5bd9ff",
     secondary: "#1d8fd6",
+    surface: "#0f3774",
     assetPath: "pokestor-assets/canal.png",
     assetClassName: "scale-[1.06]",
     orbit: { x: 26, y: 79 },
@@ -97,6 +102,7 @@ const features: Feature[] = [
     detail: "Quando a orbita muda, os eventos trazem itens exclusivos e encontros que nao se repetem.",
     color: "#ff875f",
     secondary: "#d9485c",
+    surface: "#742415",
     assetPath: "pokestor-assets/eventos.png",
     assetClassName: "scale-[1.06]",
     orbit: { x: 14, y: 43 },
@@ -649,8 +655,8 @@ function WelcomeModule({ activeFeature, className = "" }: { activeFeature: Featu
 }
 
 function OrbitSymbol({ feature, active }: { feature: Feature; active: boolean }) {
-  const backClipId = `${feature.id}-ring-back`;
   const frontClipId = `${feature.id}-ring-front`;
+  const ringDuration = active ? 10 : 13;
 
   return (
     <div className="relative h-[10.6rem] w-[10.6rem]">
@@ -665,61 +671,30 @@ function OrbitSymbol({ feature, active }: { feature: Feature; active: boolean })
       />
 
       <motion.div
-        className="absolute inset-0"
+        className="absolute inset-0 z-0"
         animate={{ rotate: 360 }}
-        transition={{ duration: active ? 10 : 13, repeat: Infinity, ease: "linear" }}
+        transition={{ duration: ringDuration, repeat: Infinity, ease: "linear" }}
       >
         <svg className="absolute inset-0 z-0 h-full w-full overflow-visible" viewBox="0 0 220 220" aria-hidden="true">
-          <defs>
-            <clipPath id={backClipId}>
-              <rect x="0" y="0" width="220" height="110" />
-            </clipPath>
-            <clipPath id={frontClipId}>
-              <rect x="0" y="110" width="220" height="110" />
-            </clipPath>
-          </defs>
-          <g clipPath={`url(#${backClipId})`}>
-            <ellipse
-              cx="110"
-              cy="114"
-              rx="82"
-              ry="30"
-              fill="none"
-              stroke={hexToRgba(feature.color, 0.38)}
-              strokeWidth="4"
-            />
-            <ellipse
-              cx="110"
-              cy="114"
-              rx="66"
-              ry="22"
-              fill="none"
-              stroke={hexToRgba(feature.secondary, 0.24)}
-              strokeWidth="2"
-              strokeDasharray="9 11"
-            />
-          </g>
-          <g clipPath={`url(#${frontClipId})`}>
-            <ellipse
-              cx="110"
-              cy="114"
-              rx="82"
-              ry="30"
-              fill="none"
-              stroke={hexToRgba(feature.color, 0.9)}
-              strokeWidth="4.8"
-            />
-            <ellipse
-              cx="110"
-              cy="114"
-              rx="66"
-              ry="22"
-              fill="none"
-              stroke={hexToRgba(feature.secondary, 0.72)}
-              strokeWidth="2.4"
-              strokeDasharray="10 12"
-            />
-          </g>
+          <ellipse
+            cx="110"
+            cy="114"
+            rx="82"
+            ry="30"
+            fill="none"
+            stroke={hexToRgba(feature.color, active ? 0.46 : 0.34)}
+            strokeWidth="4"
+          />
+          <ellipse
+            cx="110"
+            cy="114"
+            rx="66"
+            ry="22"
+            fill="none"
+            stroke={hexToRgba(feature.secondary, active ? 0.28 : 0.2)}
+            strokeWidth="2"
+            strokeDasharray="9 11"
+          />
         </svg>
       </motion.div>
 
@@ -735,16 +710,63 @@ function OrbitSymbol({ feature, active }: { feature: Feature; active: boolean })
           className="absolute inset-0 rounded-full border"
           style={{
             borderColor: hexToRgba(feature.color, active ? 0.74 : 0.45),
-            background: `radial-gradient(circle at 30% 28%, ${hexToRgba(feature.color, 0.22)} 0%, rgba(12, 8, 28, 0.84) 58%, rgba(5, 4, 15, 0.96) 100%)`,
-            boxShadow: `0 0 30px ${hexToRgba(feature.color, 0.24)}, inset -14px -14px 26px rgba(0,0,0,0.36), inset 6px 6px 16px ${hexToRgba(
+            background: `radial-gradient(circle at 34% 28%, rgba(255,255,255,0.18) 0%, ${hexToRgba(
               feature.color,
-              0.16
+              active ? 0.14 : 0.09
+            )} 14%, ${hexToRgba(feature.surface, active ? 0.88 : 0.78)} 42%, rgba(4, 4, 14, 0.97) 100%)`,
+            boxShadow: `0 0 30px ${hexToRgba(feature.color, 0.24)}, inset -14px -14px 26px rgba(0,0,0,0.38), inset 6px 6px 18px ${hexToRgba(
+              feature.color,
+              0.1
             )}`,
           }}
         />
-        <div className="absolute inset-[7%] overflow-hidden rounded-full border border-white/8 bg-black/15">
+        <div
+          className="absolute inset-x-[16%] top-1/2 z-[11] h-[1.05rem] -translate-y-1/2 rounded-full blur-[8px]"
+          style={{
+            background: `linear-gradient(90deg, transparent 0%, ${hexToRgba(feature.color, 0.14)} 18%, rgba(0,0,0,0.32) 50%, ${hexToRgba(
+              feature.color,
+              0.14
+            )} 82%, transparent 100%)`,
+          }}
+        />
+        <div className="absolute inset-[7%] overflow-hidden rounded-full border border-white/8 bg-[rgba(3,4,14,0.22)]">
           <FeatureArt feature={feature} className="h-full w-full" />
         </div>
+      </motion.div>
+
+      <motion.div
+        className="absolute inset-0 z-20 pointer-events-none"
+        animate={{ rotate: 360 }}
+        transition={{ duration: ringDuration, repeat: Infinity, ease: "linear" }}
+      >
+        <svg className="absolute inset-0 h-full w-full overflow-visible" viewBox="0 0 220 220" aria-hidden="true">
+          <defs>
+            <clipPath id={frontClipId}>
+              <rect x="20" y="96" width="180" height="36" rx="18" />
+            </clipPath>
+          </defs>
+          <g clipPath={`url(#${frontClipId})`}>
+            <ellipse
+              cx="110"
+              cy="114"
+              rx="82"
+              ry="30"
+              fill="none"
+              stroke={hexToRgba(feature.color, active ? 0.94 : 0.84)}
+              strokeWidth="5"
+            />
+            <ellipse
+              cx="110"
+              cy="114"
+              rx="66"
+              ry="22"
+              fill="none"
+              stroke={hexToRgba(feature.secondary, active ? 0.84 : 0.72)}
+              strokeWidth="2.5"
+              strokeDasharray="10 12"
+            />
+          </g>
+        </svg>
       </motion.div>
     </div>
   );

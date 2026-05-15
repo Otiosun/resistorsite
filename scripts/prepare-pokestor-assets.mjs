@@ -26,8 +26,12 @@ function isBackgroundPixel(red, green, blue, alpha) {
   const max = Math.max(red, green, blue);
   const min = Math.min(red, green, blue);
   const average = (red + green + blue) / 3;
+  const neutralSpread = max - min;
 
-  return average >= 228 && max - min <= 18;
+  const lightBackground = average >= 210 && neutralSpread <= 26;
+  const darkBackground = average <= 22 && neutralSpread <= 20;
+
+  return lightBackground || darkBackground;
 }
 
 function encodeIndex(x, y, width) {
