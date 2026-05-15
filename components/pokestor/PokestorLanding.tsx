@@ -143,6 +143,12 @@ const elementRunes = [
   { Icon: MoonStar, color: "#d3b3ff" },
 ];
 
+function coreFieldWrapperClass(compact: boolean) {
+  return compact
+    ? "absolute left-1/2 top-[49%] h-[20rem] w-[22rem] -translate-x-1/2 -translate-y-1/2 sm:h-[24rem] sm:w-[28rem]"
+    : "absolute left-1/2 top-[42%] h-[28rem] w-[46rem] -translate-x-1/2 -translate-y-1/2";
+}
+
 function hexToRgba(hex: string, alpha: number) {
   const normalized = hex.replace("#", "");
   const expanded =
@@ -354,9 +360,8 @@ function OrbitBackdrop() {
 }
 
 function GalaxyCore({ compact = false }: { compact?: boolean }) {
-  const wrapperClassName = compact
-    ? "absolute left-1/2 top-[49%] h-[20rem] w-[22rem] -translate-x-1/2 -translate-y-1/2 sm:h-[24rem] sm:w-[28rem]"
-    : "absolute left-1/2 top-[42%] h-[28rem] w-[46rem] -translate-x-1/2 -translate-y-1/2";
+  const wrapperClassName = coreFieldWrapperClass(compact);
+  const scope = compact ? "compact" : "desktop";
 
   return (
     <motion.div
@@ -374,21 +379,35 @@ function GalaxyCore({ compact = false }: { compact?: boolean }) {
         transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
       >
         <defs>
-          <linearGradient id="core-primary" x1="150" x2="850" y1="280" y2="280" gradientUnits="userSpaceOnUse">
+          <linearGradient
+            id={`core-primary-${scope}`}
+            x1="150"
+            x2="850"
+            y1="280"
+            y2="280"
+            gradientUnits="userSpaceOnUse"
+          >
             <stop stopColor="#5dc9ff" />
             <stop offset="0.22" stopColor="#a855f7" />
             <stop offset="0.5" stopColor="#ff8ce1" />
             <stop offset="0.78" stopColor="#b95dff" />
             <stop offset="1" stopColor="#5dc9ff" />
           </linearGradient>
-          <linearGradient id="core-secondary" x1="180" x2="820" y1="280" y2="280" gradientUnits="userSpaceOnUse">
+          <linearGradient
+            id={`core-secondary-${scope}`}
+            x1="180"
+            x2="820"
+            y1="280"
+            y2="280"
+            gradientUnits="userSpaceOnUse"
+          >
             <stop stopColor="#5dd5ff" />
             <stop offset="0.34" stopColor="#f472b6" />
             <stop offset="0.66" stopColor="#c084fc" />
             <stop offset="1" stopColor="#60a5fa" />
           </linearGradient>
           <radialGradient
-            id="core-glow"
+            id={`core-glow-${scope}`}
             cx="0"
             cy="0"
             r="1"
@@ -399,7 +418,7 @@ function GalaxyCore({ compact = false }: { compact?: boolean }) {
             <stop offset="0.56" stopColor="rgba(12, 7, 28, 0.95)" />
             <stop offset="1" stopColor="rgba(4, 2, 13, 0)" />
           </radialGradient>
-          <filter id="soft-glow" x="-30%" y="-50%" width="160%" height="220%">
+          <filter id={`soft-glow-${scope}`} x="-30%" y="-50%" width="160%" height="220%">
             <feGaussianBlur stdDeviation="10" result="blurred" />
             <feColorMatrix
               in="blurred"
@@ -414,9 +433,9 @@ function GalaxyCore({ compact = false }: { compact?: boolean }) {
           cy="280"
           rx="332"
           ry="112"
-          stroke="url(#core-primary)"
+          stroke={`url(#core-primary-${scope})`}
           strokeWidth="18"
-          filter="url(#soft-glow)"
+          filter={`url(#soft-glow-${scope})`}
           opacity="0.95"
         />
         <ellipse
@@ -424,7 +443,7 @@ function GalaxyCore({ compact = false }: { compact?: boolean }) {
           cy="280"
           rx="308"
           ry="100"
-          stroke="url(#core-secondary)"
+          stroke={`url(#core-secondary-${scope})`}
           strokeWidth="8"
           opacity="0.85"
         />
@@ -449,41 +468,149 @@ function GalaxyCore({ compact = false }: { compact?: boolean }) {
           />
         ))}
 
-        <ellipse cx="500" cy="280" rx="190" ry="72" fill="url(#core-glow)" />
+        <ellipse cx="500" cy="280" rx="190" ry="72" fill={`url(#core-glow-${scope})`} />
+      </motion.svg>
+    </motion.div>
+  );
+}
+
+function CoreOrbitForeground({ compact = false }: { compact?: boolean }) {
+  const wrapperClassName = coreFieldWrapperClass(compact);
+  const scope = compact ? "compact-front" : "desktop-front";
+
+  return (
+    <motion.div
+      className={`pointer-events-none ${wrapperClassName}`}
+      initial={{ opacity: 0, scale: 0.92 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 1.4, ease: "easeOut" }}
+    >
+      <motion.svg
+        className="h-full w-full overflow-visible"
+        viewBox="0 0 1000 560"
+        fill="none"
+        aria-hidden="true"
+        animate={{ rotate: [0, 2, 0, -2, 0] }}
+        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <defs>
+          <linearGradient
+            id={`core-front-primary-${scope}`}
+            x1="150"
+            x2="850"
+            y1="280"
+            y2="280"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stopColor="#5dc9ff" />
+            <stop offset="0.22" stopColor="#a855f7" />
+            <stop offset="0.5" stopColor="#ff8ce1" />
+            <stop offset="0.78" stopColor="#b95dff" />
+            <stop offset="1" stopColor="#5dc9ff" />
+          </linearGradient>
+          <linearGradient
+            id={`core-front-secondary-${scope}`}
+            x1="180"
+            x2="820"
+            y1="280"
+            y2="280"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stopColor="#5dd5ff" />
+            <stop offset="0.34" stopColor="#f472b6" />
+            <stop offset="0.66" stopColor="#c084fc" />
+            <stop offset="1" stopColor="#60a5fa" />
+          </linearGradient>
+          <filter id={`core-front-glow-${scope}`} x="-30%" y="-50%" width="160%" height="220%">
+            <feGaussianBlur stdDeviation="10" result="blurred" />
+            <feColorMatrix
+              in="blurred"
+              type="matrix"
+              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"
+            />
+          </filter>
+          <clipPath id={`core-front-clip-${scope}`}>
+            <rect x="122" y="280" width="756" height="92" rx="46" />
+          </clipPath>
+        </defs>
+
+        <g clipPath={`url(#core-front-clip-${scope})`}>
+          <ellipse
+            cx="500"
+            cy="280"
+            rx="332"
+            ry="112"
+            stroke={`url(#core-front-primary-${scope})`}
+            strokeWidth="18"
+            filter={`url(#core-front-glow-${scope})`}
+            opacity="0.98"
+          />
+          <ellipse
+            cx="500"
+            cy="280"
+            rx="308"
+            ry="100"
+            stroke={`url(#core-front-secondary-${scope})`}
+            strokeWidth="8"
+            opacity="0.92"
+          />
+          <ellipse
+            cx="500"
+            cy="280"
+            rx="352"
+            ry="122"
+            stroke="rgba(196, 181, 253, 0.22)"
+            strokeWidth="2"
+            strokeDasharray="2 18"
+          />
+        </g>
       </motion.svg>
     </motion.div>
   );
 }
 
 function OrbitCore({ compact = false }: { compact?: boolean }) {
+  const shellClassName = compact ? "h-[13rem] w-[13rem]" : "h-[18rem] w-[18rem]";
+
   return (
     <motion.div
-      className={`absolute left-1/2 top-[43%] -translate-x-1/2 -translate-y-1/2 ${
-        compact ? "h-[13rem] w-[13rem]" : "h-[18rem] w-[18rem]"
-      }`}
+      className={`absolute left-1/2 top-[43%] -translate-x-1/2 -translate-y-1/2 ${shellClassName}`}
       initial={{ opacity: 0, scale: 0.92 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 1.1, delay: 0.15 }}
     >
       <div
-        className="absolute inset-[8%] rounded-full blur-[38px]"
+        className="absolute inset-[7%] rounded-full blur-[42px]"
         style={{
           background:
-            "radial-gradient(circle, rgba(255, 94, 247, 0.24) 0%, rgba(116, 64, 255, 0.18) 45%, transparent 76%)",
+            "radial-gradient(circle, rgba(255, 94, 247, 0.28) 0%, rgba(116, 64, 255, 0.2) 44%, transparent 76%)",
+        }}
+      />
+      <div
+        className="absolute inset-[4%] rounded-full"
+        style={{
+          boxShadow:
+            "0 0 0 1px rgba(252, 228, 255, 0.22), 0 0 24px rgba(219, 92, 255, 0.18), inset 0 0 0 1px rgba(255,255,255,0.06)",
+        }}
+      />
+      <div
+        className="absolute inset-[8%] rounded-full"
+        style={{
+          border: "1px solid rgba(249, 168, 255, 0.22)",
+          boxShadow: "inset 0 0 18px rgba(199, 76, 255, 0.18), inset 0 -10px 18px rgba(0,0,0,0.28)",
+        }}
+      />
+      <div
+        className="absolute inset-[13%] rounded-full"
+        style={{
+          background:
+            "radial-gradient(circle at 34% 28%, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.04) 12%, rgba(18,8,34,0) 54%)",
         }}
       />
       <motion.div
-        className="absolute inset-0"
-        animate={{ rotate: [0, 360] }}
-        transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
-      >
-        <div className="absolute inset-[6%] rounded-full border border-fuchsia-300/25" />
-        <div className="absolute inset-[11%] rounded-full border border-cyan-300/18" />
-      </motion.div>
-      <motion.div
         className="relative h-full w-full"
-        animate={{ y: [0, -8, 0], rotate: [0, 1.5, 0, -1.5, 0] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        animate={{ scale: [1, 1.01, 1], rotate: [0, 0.75, 0, -0.75, 0] }}
+        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
       >
         <img
           src={coreAssetPath}
@@ -937,6 +1064,7 @@ function DesktopLanding({
         <OrbitBackdrop />
         <GalaxyCore />
         <OrbitCore />
+        <CoreOrbitForeground />
 
         {features.map((feature) => (
           <FeatureNode
@@ -971,6 +1099,7 @@ function MobileLanding({
         <div className="relative h-[24rem] w-full">
           <GalaxyCore compact />
           <OrbitCore compact />
+          <CoreOrbitForeground compact />
         </div>
       </div>
 
