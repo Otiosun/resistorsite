@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -39,8 +38,8 @@ type Feature = {
   };
 };
 
-const brandLogoPath = "/pokestor-assets/logo.png";
-const coreAssetPath = "/pokestor-assets/core.png";
+const brandLogoPath = "pokestor-assets/logo.png";
+const coreAssetPath = "pokestor-assets/core.png";
 
 const features: Feature[] = [
   {
@@ -51,7 +50,7 @@ const features: Feature[] = [
     detail: "Registre encontros, estude elementos e avance na sua colecao com visao estrategica.",
     color: "#d48cff",
     secondary: "#7c3aed",
-    assetPath: "/pokestor-assets/pokedex.png",
+    assetPath: "pokestor-assets/pokedex.png",
     orbit: { x: 50, y: 15 },
   },
   {
@@ -62,7 +61,7 @@ const features: Feature[] = [
     detail: "Rotas, iscas e combinacoes raras se conectam para deixar sua jornada mais afiada.",
     color: "#7df9ae",
     secondary: "#0f9f6e",
-    assetPath: "/pokestor-assets/captura.png",
+    assetPath: "pokestor-assets/captura.png",
     assetClassName: "scale-[0.94]",
     orbit: { x: 86, y: 43 },
   },
@@ -74,7 +73,7 @@ const features: Feature[] = [
     detail: "Cada nova area abre encontros, reliquias e objetivos para continuar expandindo o universo.",
     color: "#ffcf6d",
     secondary: "#c58620",
-    assetPath: "/pokestor-assets/exploracao.png",
+    assetPath: "pokestor-assets/exploracao.png",
     assetClassName: "scale-[0.96]",
     orbit: { x: 74, y: 79 },
   },
@@ -86,7 +85,7 @@ const features: Feature[] = [
     detail: "O canal reune treinadores, guias rapidos e convites para os momentos mais importantes.",
     color: "#5bd9ff",
     secondary: "#1d8fd6",
-    assetPath: "/pokestor-assets/canal.png",
+    assetPath: "pokestor-assets/canal.png",
     assetClassName: "scale-[1.06]",
     orbit: { x: 26, y: 79 },
   },
@@ -98,7 +97,7 @@ const features: Feature[] = [
     detail: "Quando a orbita muda, os eventos trazem itens exclusivos e encontros que nao se repetem.",
     color: "#ff875f",
     secondary: "#d9485c",
-    assetPath: "/pokestor-assets/eventos.png",
+    assetPath: "pokestor-assets/eventos.png",
     assetClassName: "scale-[1.06]",
     orbit: { x: 14, y: 43 },
   },
@@ -174,23 +173,17 @@ function featureIcon(featureId: FeatureId, className: string) {
 function FeatureArt({
   feature,
   className,
-  sizes,
-  priority = false,
 }: {
   feature: Feature;
   className?: string;
-  sizes: string;
-  priority?: boolean;
 }) {
   return (
     <div className={`relative ${className ?? ""}`}>
-      <Image
+      <img
         src={feature.assetPath}
         alt={feature.title}
-        fill
-        sizes={sizes}
-        priority={priority}
-        className={`object-contain drop-shadow-[0_0_26px_rgba(255,255,255,0.14)] ${feature.assetClassName ?? ""}`}
+        draggable="false"
+        className={`absolute inset-0 h-full w-full object-contain drop-shadow-[0_0_26px_rgba(255,255,255,0.14)] ${feature.assetClassName ?? ""}`}
       />
     </div>
   );
@@ -218,13 +211,11 @@ function TopNav() {
           className="pointer-events-auto inline-flex min-w-0 flex-1 items-center gap-3 text-white/90 transition-transform hover:scale-[1.02]"
         >
           <div className="relative h-10 w-[9.8rem] min-w-0 sm:h-12 sm:w-[12.5rem] lg:w-[14rem]">
-            <Image
+            <img
               src={brandLogoPath}
               alt="Pokestor"
-              fill
-              priority
-              sizes="(max-width: 640px) 160px, 220px"
-              className="object-contain object-left drop-shadow-[0_0_16px_rgba(137,92,246,0.28)]"
+              draggable="false"
+              className="absolute inset-0 h-full w-full object-contain object-left drop-shadow-[0_0_16px_rgba(137,92,246,0.28)]"
             />
           </div>
         </a>
@@ -488,13 +479,11 @@ function OrbitCore({ compact = false }: { compact?: boolean }) {
         animate={{ y: [0, -8, 0], rotate: [0, 1.5, 0, -1.5, 0] }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       >
-        <Image
+        <img
           src={coreAssetPath}
           alt="Nucleo orbital"
-          fill
-          sizes={compact ? "220px" : "320px"}
-          priority
-          className="object-contain drop-shadow-[0_0_34px_rgba(230,120,255,0.34)]"
+          draggable="false"
+          className="absolute inset-0 h-full w-full object-contain drop-shadow-[0_0_34px_rgba(230,120,255,0.34)]"
         />
       </motion.div>
     </motion.div>
@@ -525,20 +514,18 @@ function HeroBrand({ activeFeature, compact = false }: { activeFeature: Feature;
       </div>
 
       <div className={`relative ${compact ? "h-[6.3rem] w-[min(92vw,22rem)]" : "h-[9.5rem] w-[min(92vw,45rem)]"}`}>
-        <Image
+        <img
           src={brandLogoPath}
           alt="Pokestor"
-          fill
-          priority
-          sizes={compact ? "360px" : "720px"}
-          className="object-contain drop-shadow-[0_0_28px_rgba(122,92,255,0.28)]"
+          draggable="false"
+          className="absolute inset-0 h-full w-full object-contain drop-shadow-[0_0_28px_rgba(122,92,255,0.28)]"
         />
       </div>
 
       <div className="mt-3 flex items-center gap-3 text-fuchsia-200/75">
         <span className="h-px w-12 bg-gradient-to-r from-transparent via-fuchsia-300/80 to-transparent" />
         <div className="relative h-7 w-7 overflow-hidden rounded-full border border-fuchsia-300/45 bg-fuchsia-300/8 p-1">
-          <FeatureArt feature={activeFeature} className="h-full w-full" sizes="28px" />
+          <FeatureArt feature={activeFeature} className="h-full w-full" />
         </div>
         <span className="h-px w-12 bg-gradient-to-r from-transparent via-cyan-300/80 to-transparent" />
       </div>
@@ -637,7 +624,7 @@ function WelcomeModule({ activeFeature, className = "" }: { activeFeature: Featu
               background: hexToRgba(activeFeature.color, 0.08),
             }}
           >
-            <FeatureArt feature={activeFeature} className="h-full w-full" sizes="32px" />
+            <FeatureArt feature={activeFeature} className="h-full w-full" />
           </div>
           <span className="h-px w-12 bg-cyan-300/35" />
         </div>
@@ -756,7 +743,7 @@ function OrbitSymbol({ feature, active }: { feature: Feature; active: boolean })
           }}
         />
         <div className="absolute inset-[7%] overflow-hidden rounded-full border border-white/8 bg-black/15">
-          <FeatureArt feature={feature} className="h-full w-full" sizes="160px" />
+          <FeatureArt feature={feature} className="h-full w-full" />
         </div>
       </motion.div>
     </div>
@@ -799,7 +786,7 @@ function FeatureNode({
           }}
         >
           <div className="relative h-5 w-5 overflow-hidden rounded-full border" style={{ borderColor: border }}>
-            <FeatureArt feature={feature} className="h-full w-full" sizes="20px" />
+            <FeatureArt feature={feature} className="h-full w-full" />
           </div>
           <span className="font-display text-[0.56rem] uppercase tracking-[0.2em]" style={{ color: "#f8ebff" }}>
             {feature.title}
@@ -834,7 +821,7 @@ function OrbitFocusPanel({ activeFeature }: { activeFeature: Feature }) {
         />
         <div className="relative">
           <div className="mb-3 flex items-center justify-center">
-            <FeatureArt feature={activeFeature} className="h-14 w-14" sizes="56px" />
+            <FeatureArt feature={activeFeature} className="h-14 w-14" />
           </div>
           <div className="flex items-center justify-center gap-2" style={{ color: activeFeature.color }}>
             {featureIcon(activeFeature.id, "h-4 w-4")}
@@ -885,7 +872,7 @@ function MobileFeatureCard({
             boxShadow: `0 0 14px ${hexToRgba(feature.color, 0.18)}`,
           }}
         >
-          <FeatureArt feature={feature} className="h-full w-full" sizes="56px" />
+          <FeatureArt feature={feature} className="h-full w-full" />
         </div>
         <div className="min-w-0">
           <p className="font-display text-[0.52rem] uppercase tracking-[0.24em]" style={{ color: feature.color }}>
