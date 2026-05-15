@@ -1,7 +1,8 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { AnimatePresence, motion } from "framer-motion"
+import Image from "next/image";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowDown,
   ArrowRight,
@@ -17,77 +18,91 @@ import {
   Radio,
   Sparkles,
   Zap,
-} from "lucide-react"
-import { Starfield } from "./Starfield"
+} from "lucide-react";
+import { Starfield } from "./Starfield";
 
-type FeatureId = "pokedex" | "captura" | "exploracao" | "canal" | "eventos"
+type FeatureId = "pokedex" | "captura" | "exploracao" | "canal" | "eventos";
 
 type Feature = {
-  id: FeatureId
-  title: string
-  eyebrow: string
-  description: string
-  detail: string
-  color: string
-  secondary: string
+  id: FeatureId;
+  title: string;
+  eyebrow: string;
+  description: string;
+  detail: string;
+  color: string;
+  secondary: string;
+  assetPath: string;
+  assetClassName?: string;
   orbit: {
-    x: number
-    y: number
-  }
-}
+    x: number;
+    y: number;
+  };
+};
+
+const brandLogoPath = "/pokestor-assets/logo.png";
+const coreAssetPath = "/pokestor-assets/core.png";
 
 const features: Feature[] = [
   {
     id: "pokedex",
-    title: "Pokédex",
+    title: "Pokedex",
     eyebrow: "Arquivo estelar",
-    description: "Descubra criaturas, raridades e tipos em um compêndio vivo feito para treinadores curiosos.",
-    detail: "Registre encontros, estude elementos e avance na sua coleção com visão estratégica.",
+    description: "Descubra criaturas, raridades e tipos em um compendio vivo feito para treinadores curiosos.",
+    detail: "Registre encontros, estude elementos e avance na sua colecao com visao estrategica.",
     color: "#d48cff",
     secondary: "#7c3aed",
+    assetPath: "/pokestor-assets/pokedex.png",
     orbit: { x: 50, y: 15 },
   },
   {
     id: "captura",
     title: "Captura",
-    eyebrow: "Caçada mística",
-    description: "Aprenda a ler padrões, escolher o momento certo e cercar monstros difíceis com precisão.",
-    detail: "Rotas, iscas e combinações raras se conectam para deixar sua jornada mais afiada.",
+    eyebrow: "Cacada mistica",
+    description: "Aprenda a ler padroes, escolher o momento certo e cercar monstros dificeis com precisao.",
+    detail: "Rotas, iscas e combinacoes raras se conectam para deixar sua jornada mais afiada.",
     color: "#7df9ae",
     secondary: "#0f9f6e",
+    assetPath: "/pokestor-assets/captura.png",
+    assetClassName: "scale-[0.94]",
     orbit: { x: 86, y: 43 },
   },
   {
     id: "exploracao",
-    title: "Exploração",
+    title: "Exploracao",
     eyebrow: "Mapa dourado",
-    description: "Viaje por regiões secretas, ruínas cintilantes e zonas lendárias escondidas na órbita.",
-    detail: "Cada nova área abre encontros, relíquias e objetivos para continuar expandindo o universo.",
+    description: "Viaje por regioes secretas, ruinas cintilantes e zonas lendarias escondidas na orbita.",
+    detail: "Cada nova area abre encontros, reliquias e objetivos para continuar expandindo o universo.",
     color: "#ffcf6d",
     secondary: "#c58620",
+    assetPath: "/pokestor-assets/exploracao.png",
+    assetClassName: "scale-[0.96]",
     orbit: { x: 74, y: 79 },
   },
   {
     id: "canal",
     title: "Canal",
-    eyebrow: "Transmissão ativa",
-    description: "Entre na frequência da comunidade e acompanhe avisos, drops e novidades sem perder nada.",
-    detail: "O canal reúne treinadores, guias rápidos e convites para os momentos mais importantes.",
+    eyebrow: "Transmissao ativa",
+    description: "Entre na frequencia da comunidade e acompanhe avisos, drops e novidades sem perder nada.",
+    detail: "O canal reune treinadores, guias rapidos e convites para os momentos mais importantes.",
     color: "#5bd9ff",
     secondary: "#1d8fd6",
+    assetPath: "/pokestor-assets/canal.png",
+    assetClassName: "scale-[1.06]",
     orbit: { x: 26, y: 79 },
   },
   {
     id: "eventos",
     title: "Eventos",
     eyebrow: "Alertas raros",
-    description: "Fique por dentro de desafios temporários, recompensas especiais e caçadas comemorativas.",
-    detail: "Quando a órbita muda, os eventos trazem itens exclusivos e encontros que não se repetem.",
+    description: "Fique por dentro de desafios temporarios, recompensas especiais e cacadas comemorativas.",
+    detail: "Quando a orbita muda, os eventos trazem itens exclusivos e encontros que nao se repetem.",
     color: "#ff875f",
     secondary: "#d9485c",
+    assetPath: "/pokestor-assets/eventos.png",
+    assetClassName: "scale-[1.06]",
     orbit: { x: 14, y: 43 },
   },
-]
+];
 
 const orbitMarkers = [
   { x: 50, y: 15.5 },
@@ -97,13 +112,13 @@ const orbitMarkers = [
   { x: 30, y: 83.5 },
   { x: 12, y: 54 },
   { x: 23, y: 27.5 },
-]
+];
 
 const galaxyParticles = Array.from({ length: 90 }, (_, index) => {
-  const angle = (index / 90) * Math.PI * 2
-  const radiusX = 300 + Math.sin(index * 1.7) * 26 + (index % 5) * 8
-  const radiusY = 120 + Math.cos(index * 1.2) * 18 + (index % 3) * 6
-  const fill = index % 3 === 0 ? "#60a5fa" : index % 2 === 0 ? "#f472b6" : "#c084fc"
+  const angle = (index / 90) * Math.PI * 2;
+  const radiusX = 300 + Math.sin(index * 1.7) * 26 + (index % 5) * 8;
+  const radiusY = 120 + Math.cos(index * 1.2) * 18 + (index % 3) * 6;
+  const fill = index % 3 === 0 ? "#60a5fa" : index % 2 === 0 ? "#f472b6" : "#c084fc";
 
   return {
     cx: 500 + Math.cos(angle) * radiusX,
@@ -111,8 +126,8 @@ const galaxyParticles = Array.from({ length: 90 }, (_, index) => {
     r: 1.2 + (index % 4) * 0.45,
     fill,
     opacity: 0.4 + (index % 5) * 0.08,
-  }
-})
+  };
+});
 
 const elementRunes = [
   { Icon: Leaf, color: "#7df9ae" },
@@ -121,39 +136,64 @@ const elementRunes = [
   { Icon: Zap, color: "#ffd86d" },
   { Icon: Sparkles, color: "#ef8fff" },
   { Icon: MoonStar, color: "#d3b3ff" },
-]
+];
 
 function hexToRgba(hex: string, alpha: number) {
-  const normalized = hex.replace("#", "")
+  const normalized = hex.replace("#", "");
   const expanded =
     normalized.length === 3
       ? normalized
           .split("")
           .map((value) => value + value)
           .join("")
-      : normalized
+      : normalized;
 
-  const numeric = Number.parseInt(expanded, 16)
-  const red = (numeric >> 16) & 255
-  const green = (numeric >> 8) & 255
-  const blue = numeric & 255
+  const numeric = Number.parseInt(expanded, 16);
+  const red = (numeric >> 16) & 255;
+  const green = (numeric >> 8) & 255;
+  const blue = numeric & 255;
 
-  return `rgba(${red}, ${green}, ${blue}, ${alpha})`
+  return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
 }
 
 function featureIcon(featureId: FeatureId, className: string) {
   switch (featureId) {
     case "pokedex":
-      return <BookOpen className={className} strokeWidth={1.65} />
+      return <BookOpen className={className} strokeWidth={1.65} />;
     case "captura":
-      return <Crosshair className={className} strokeWidth={1.65} />
+      return <Crosshair className={className} strokeWidth={1.65} />;
     case "exploracao":
-      return <Award className={className} strokeWidth={1.65} />
+      return <Award className={className} strokeWidth={1.65} />;
     case "canal":
-      return <Radio className={className} strokeWidth={1.65} />
+      return <Radio className={className} strokeWidth={1.65} />;
     case "eventos":
-      return <Flag className={className} strokeWidth={1.65} />
+      return <Flag className={className} strokeWidth={1.65} />;
   }
+}
+
+function FeatureArt({
+  feature,
+  className,
+  sizes,
+  priority = false,
+}: {
+  feature: Feature;
+  className?: string;
+  sizes: string;
+  priority?: boolean;
+}) {
+  return (
+    <div className={`relative ${className ?? ""}`}>
+      <Image
+        src={feature.assetPath}
+        alt={feature.title}
+        fill
+        sizes={sizes}
+        priority={priority}
+        className={`object-contain drop-shadow-[0_0_26px_rgba(255,255,255,0.14)] ${feature.assetClassName ?? ""}`}
+      />
+    </div>
+  );
 }
 
 function TopNav() {
@@ -175,39 +215,25 @@ function TopNav() {
       <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-2 px-3 py-3 sm:px-6 sm:py-4 lg:px-10">
         <a
           href="#universo"
-          className="pointer-events-auto inline-flex min-w-0 flex-1 items-center gap-2 text-white/90 transition-transform hover:scale-[1.02] sm:gap-3"
+          className="pointer-events-auto inline-flex min-w-0 flex-1 items-center gap-3 text-white/90 transition-transform hover:scale-[1.02]"
         >
-          <span className="relative flex h-8 w-8 shrink-0 items-center justify-center sm:h-9 sm:w-9">
-            <span
-              className="absolute h-5 w-5 rotate-45 rounded-[6px] border sm:h-6 sm:w-6"
-              style={{
-                borderColor: "rgba(168, 85, 247, 0.65)",
-                boxShadow: "0 0 22px rgba(96, 165, 250, 0.38)",
-                background:
-                  "radial-gradient(circle at 45% 45%, rgba(125, 211, 252, 0.95) 0%, rgba(168, 85, 247, 0.8) 48%, rgba(10, 3, 20, 0.2) 100%)",
-              }}
+          <div className="relative h-10 w-[9.8rem] min-w-0 sm:h-12 sm:w-[12.5rem] lg:w-[14rem]">
+            <Image
+              src={brandLogoPath}
+              alt="Pokestor"
+              fill
+              priority
+              sizes="(max-width: 640px) 160px, 220px"
+              className="object-contain object-left drop-shadow-[0_0_16px_rgba(137,92,246,0.28)]"
             />
-            <span className="absolute h-7 w-[2px] rounded-full bg-cyan-200/80 blur-[1px] sm:h-8" />
-            <span className="absolute h-[2px] w-7 rounded-full bg-fuchsia-200/80 blur-[1px] sm:w-8" />
-          </span>
-          <span
-            className="truncate font-brand text-[1.5rem] uppercase leading-none tracking-[0.08em] text-transparent min-[400px]:text-[1.7rem] sm:text-[2.2rem] sm:tracking-[0.12em] lg:text-[2.5rem]"
-            style={{
-              backgroundImage: "linear-gradient(180deg, #f7f3ff 0%, #8de1ff 30%, #ee9fff 78%, #a45bff 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              textShadow: "0 0 18px rgba(204, 153, 255, 0.35)",
-            }}
-          >
-            Pokestor
-          </span>
+          </div>
         </a>
 
         <div className="pointer-events-auto flex shrink-0 items-center gap-2 sm:gap-3">
           <a
             href="#orbita"
-            aria-label="Ir para a órbita principal"
-            className="pixel-cut hidden items-center justify-center border bg-black/25 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-fuchsia-300/80 min-[390px]:flex h-10 w-10 sm:h-12 sm:w-12"
+            aria-label="Ir para a orbita principal"
+            className="pixel-cut hidden h-10 w-10 items-center justify-center border bg-black/25 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-fuchsia-300/80 min-[390px]:flex sm:h-12 sm:w-12"
             style={{
               borderColor: "rgba(218, 170, 255, 0.45)",
               boxShadow: "0 0 20px rgba(180, 99, 255, 0.18)",
@@ -231,7 +257,7 @@ function TopNav() {
         </div>
       </div>
     </motion.header>
-  )
+  );
 }
 
 function NebulaClouds() {
@@ -273,18 +299,13 @@ function NebulaClouds() {
         }}
       />
     </div>
-  )
+  );
 }
 
 function OrbitBackdrop() {
   return (
     <div className="absolute inset-0">
-      <svg
-        className="absolute inset-0 h-full w-full"
-        viewBox="0 0 1200 860"
-        fill="none"
-        aria-hidden="true"
-      >
+      <svg className="absolute inset-0 h-full w-full" viewBox="0 0 1200 860" fill="none" aria-hidden="true">
         <defs>
           <linearGradient id="orbit-line" x1="150" x2="1050" y1="430" y2="430" gradientUnits="userSpaceOnUse">
             <stop stopColor="rgba(244,114,182,0.45)" />
@@ -332,13 +353,13 @@ function OrbitBackdrop() {
         </motion.div>
       ))}
     </div>
-  )
+  );
 }
 
 function GalaxyCore({ compact = false }: { compact?: boolean }) {
   const wrapperClassName = compact
     ? "absolute left-1/2 top-[49%] h-[20rem] w-[22rem] -translate-x-1/2 -translate-y-1/2 sm:h-[24rem] sm:w-[28rem]"
-    : "absolute left-1/2 top-[42%] h-[28rem] w-[46rem] -translate-x-1/2 -translate-y-1/2"
+    : "absolute left-1/2 top-[42%] h-[28rem] w-[46rem] -translate-x-1/2 -translate-y-1/2";
 
   return (
     <motion.div
@@ -434,7 +455,50 @@ function GalaxyCore({ compact = false }: { compact?: boolean }) {
         <ellipse cx="500" cy="280" rx="190" ry="72" fill="url(#core-glow)" />
       </motion.svg>
     </motion.div>
-  )
+  );
+}
+
+function OrbitCore({ compact = false }: { compact?: boolean }) {
+  return (
+    <motion.div
+      className={`absolute left-1/2 top-[43%] -translate-x-1/2 -translate-y-1/2 ${
+        compact ? "h-[13rem] w-[13rem]" : "h-[18rem] w-[18rem]"
+      }`}
+      initial={{ opacity: 0, scale: 0.92 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 1.1, delay: 0.15 }}
+    >
+      <div
+        className="absolute inset-[8%] rounded-full blur-[38px]"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(255, 94, 247, 0.24) 0%, rgba(116, 64, 255, 0.18) 45%, transparent 76%)",
+        }}
+      />
+      <motion.div
+        className="absolute inset-0"
+        animate={{ rotate: [0, 360] }}
+        transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
+      >
+        <div className="absolute inset-[6%] rounded-full border border-fuchsia-300/25" />
+        <div className="absolute inset-[11%] rounded-full border border-cyan-300/18" />
+      </motion.div>
+      <motion.div
+        className="relative h-full w-full"
+        animate={{ y: [0, -8, 0], rotate: [0, 1.5, 0, -1.5, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <Image
+          src={coreAssetPath}
+          alt="Nucleo orbital"
+          fill
+          sizes={compact ? "220px" : "320px"}
+          priority
+          className="object-contain drop-shadow-[0_0_34px_rgba(230,120,255,0.34)]"
+        />
+      </motion.div>
+    </motion.div>
+  );
 }
 
 function HeroBrand({ activeFeature, compact = false }: { activeFeature: Feature; compact?: boolean }) {
@@ -460,37 +524,22 @@ function HeroBrand({ activeFeature, compact = false }: { activeFeature: Feature;
         <span className="font-display">{activeFeature.eyebrow}</span>
       </div>
 
-      <div className="relative">
-        <div
-          aria-hidden="true"
-          className={`absolute inset-0 translate-y-2 scale-[1.02] font-brand uppercase tracking-[0.08em] text-fuchsia-400/20 blur-[4px] ${
-            compact ? "text-[clamp(3.35rem,16vw,5.6rem)]" : "text-[clamp(4.8rem,10vw,7.8rem)]"
-          }`}
-        >
-          POKESTOR
-        </div>
-        <h1
-          className={`relative font-brand uppercase leading-none tracking-[0.08em] text-transparent ${
-            compact ? "text-[clamp(3.35rem,16vw,5.6rem)]" : "text-[clamp(4.8rem,10vw,7.8rem)]"
-          }`}
-          style={{
-            backgroundImage: "linear-gradient(180deg, #faf5ff 0%, #86e3ff 26%, #8ec5ff 40%, #f0a6ff 72%, #9a56ff 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            WebkitTextStroke: "1px rgba(250, 232, 255, 0.14)",
-            textShadow:
-              "0 0 24px rgba(96, 165, 250, 0.2), 0 0 42px rgba(217, 70, 239, 0.25), 0 0 75px rgba(168, 85, 247, 0.16)",
-          }}
-        >
-          POKESTOR
-        </h1>
+      <div className={`relative ${compact ? "h-[6.3rem] w-[min(92vw,22rem)]" : "h-[9.5rem] w-[min(92vw,45rem)]"}`}>
+        <Image
+          src={brandLogoPath}
+          alt="Pokestor"
+          fill
+          priority
+          sizes={compact ? "360px" : "720px"}
+          className="object-contain drop-shadow-[0_0_28px_rgba(122,92,255,0.28)]"
+        />
       </div>
 
       <div className="mt-3 flex items-center gap-3 text-fuchsia-200/75">
         <span className="h-px w-12 bg-gradient-to-r from-transparent via-fuchsia-300/80 to-transparent" />
-        <span className="rounded-full border border-fuchsia-300/45 px-2 py-1">
-          {featureIcon(activeFeature.id, "h-3.5 w-3.5")}
-        </span>
+        <div className="relative h-7 w-7 overflow-hidden rounded-full border border-fuchsia-300/45 bg-fuchsia-300/8 p-1">
+          <FeatureArt feature={activeFeature} className="h-full w-full" sizes="28px" />
+        </div>
         <span className="h-px w-12 bg-gradient-to-r from-transparent via-cyan-300/80 to-transparent" />
       </div>
 
@@ -500,8 +549,8 @@ function HeroBrand({ activeFeature, compact = false }: { activeFeature: Feature;
 
       {!compact && (
         <p className="mt-6 max-w-[44rem] text-balance text-lg leading-8 text-slate-200/76">
-          A base ficou forte. Agora a navegacao respira melhor: identidade e convite ficam no topo, e a orbita
-          ganha um palco proprio logo abaixo.
+          Agora a home usa seus simbolos reais e um nucleo central proprio, com o sistema orbital mais proximo da
+          direcao que voce imaginou.
         </p>
       )}
 
@@ -525,7 +574,7 @@ function HeroBrand({ activeFeature, compact = false }: { activeFeature: Feature;
         ))}
       </div>
     </motion.div>
-  )
+  );
 }
 
 function WelcomeModule({ activeFeature, className = "" }: { activeFeature: Feature; className?: string }) {
@@ -581,16 +630,15 @@ function WelcomeModule({ activeFeature, className = "" }: { activeFeature: Featu
 
         <div className="mt-5 flex items-center justify-center gap-3 text-fuchsia-100/70">
           <span className="h-px w-12 bg-fuchsia-300/35" />
-          <span
-            className="inline-flex h-7 w-7 items-center justify-center rounded-full border"
+          <div
+            className="relative h-8 w-8 overflow-hidden rounded-full border p-1"
             style={{
               borderColor: hexToRgba(activeFeature.color, 0.5),
-              color: activeFeature.color,
               background: hexToRgba(activeFeature.color, 0.08),
             }}
           >
-            {featureIcon(activeFeature.id, "h-3.5 w-3.5")}
-          </span>
+            <FeatureArt feature={activeFeature} className="h-full w-full" sizes="32px" />
+          </div>
           <span className="h-px w-12 bg-cyan-300/35" />
         </div>
 
@@ -610,7 +658,109 @@ function WelcomeModule({ activeFeature, className = "" }: { activeFeature: Featu
         </div>
       </div>
     </motion.section>
-  )
+  );
+}
+
+function OrbitSymbol({ feature, active }: { feature: Feature; active: boolean }) {
+  const backClipId = `${feature.id}-ring-back`;
+  const frontClipId = `${feature.id}-ring-front`;
+
+  return (
+    <div className="relative h-[10.6rem] w-[10.6rem]">
+      <div
+        className="absolute inset-[18%] rounded-full blur-[34px]"
+        style={{
+          background: `radial-gradient(circle, ${hexToRgba(feature.color, active ? 0.38 : 0.24)} 0%, ${hexToRgba(
+            feature.secondary,
+            0.12
+          )} 55%, transparent 78%)`,
+        }}
+      />
+
+      <motion.div
+        className="absolute inset-0"
+        animate={{ rotate: 360 }}
+        transition={{ duration: active ? 10 : 13, repeat: Infinity, ease: "linear" }}
+      >
+        <svg className="absolute inset-0 z-0 h-full w-full overflow-visible" viewBox="0 0 220 220" aria-hidden="true">
+          <defs>
+            <clipPath id={backClipId}>
+              <rect x="0" y="0" width="220" height="110" />
+            </clipPath>
+            <clipPath id={frontClipId}>
+              <rect x="0" y="110" width="220" height="110" />
+            </clipPath>
+          </defs>
+          <g clipPath={`url(#${backClipId})`}>
+            <ellipse
+              cx="110"
+              cy="114"
+              rx="82"
+              ry="30"
+              fill="none"
+              stroke={hexToRgba(feature.color, 0.38)}
+              strokeWidth="4"
+            />
+            <ellipse
+              cx="110"
+              cy="114"
+              rx="66"
+              ry="22"
+              fill="none"
+              stroke={hexToRgba(feature.secondary, 0.24)}
+              strokeWidth="2"
+              strokeDasharray="9 11"
+            />
+          </g>
+          <g clipPath={`url(#${frontClipId})`}>
+            <ellipse
+              cx="110"
+              cy="114"
+              rx="82"
+              ry="30"
+              fill="none"
+              stroke={hexToRgba(feature.color, 0.9)}
+              strokeWidth="4.8"
+            />
+            <ellipse
+              cx="110"
+              cy="114"
+              rx="66"
+              ry="22"
+              fill="none"
+              stroke={hexToRgba(feature.secondary, 0.72)}
+              strokeWidth="2.4"
+              strokeDasharray="10 12"
+            />
+          </g>
+        </svg>
+      </motion.div>
+
+      <motion.div
+        className="absolute inset-[12%] z-10 rounded-full"
+        animate={{ y: [0, -10, 0], rotate: active ? [0, -2, 2, 0] : [0, -1.5, 1.5, 0] }}
+        transition={{
+          y: { duration: 5.8, repeat: Infinity, ease: "easeInOut" },
+          rotate: { duration: 7.2, repeat: Infinity, ease: "easeInOut" },
+        }}
+      >
+        <div
+          className="absolute inset-0 rounded-full border"
+          style={{
+            borderColor: hexToRgba(feature.color, active ? 0.74 : 0.45),
+            background: `radial-gradient(circle at 30% 28%, ${hexToRgba(feature.color, 0.22)} 0%, rgba(12, 8, 28, 0.84) 58%, rgba(5, 4, 15, 0.96) 100%)`,
+            boxShadow: `0 0 30px ${hexToRgba(feature.color, 0.24)}, inset -14px -14px 26px rgba(0,0,0,0.36), inset 6px 6px 16px ${hexToRgba(
+              feature.color,
+              0.16
+            )}`,
+          }}
+        />
+        <div className="absolute inset-[7%] overflow-hidden rounded-full border border-white/8 bg-black/15">
+          <FeatureArt feature={feature} className="h-full w-full" sizes="160px" />
+        </div>
+      </motion.div>
+    </div>
+  );
 }
 
 function FeatureNode({
@@ -618,14 +768,12 @@ function FeatureNode({
   active,
   onSelect,
 }: {
-  feature: Feature
-  active: boolean
-  onSelect: (featureId: FeatureId) => void
+  feature: Feature;
+  active: boolean;
+  onSelect: (featureId: FeatureId) => void;
 }) {
-  const glow = hexToRgba(feature.color, active ? 0.55 : 0.32)
-  const border = hexToRgba(feature.color, active ? 0.8 : 0.56)
-  const labelGlow = hexToRgba(feature.color, active ? 0.28 : 0.16)
-  const ring = hexToRgba(feature.secondary, 0.88)
+  const border = hexToRgba(feature.color, active ? 0.8 : 0.56);
+  const labelGlow = hexToRgba(feature.color, active ? 0.28 : 0.16);
 
   return (
     <motion.button
@@ -633,80 +781,16 @@ function FeatureNode({
       className="absolute hidden -translate-x-1/2 -translate-y-1/2 text-left lg:block"
       style={{ left: `${feature.orbit.x}%`, top: `${feature.orbit.y}%` }}
       initial={{ opacity: 0, scale: 0.72 }}
-      animate={{ opacity: 1, scale: active ? 1.04 : 1 }}
+      animate={{ opacity: 1, scale: active ? 1.05 : 1 }}
       transition={{ duration: 0.7, type: "spring", stiffness: 120, damping: 16 }}
-      whileHover={{ scale: 1.07 }}
+      whileHover={{ scale: 1.08 }}
       onClick={() => onSelect(feature.id)}
     >
       <div className="flex flex-col items-center">
-        <motion.div
-          className="relative h-[9rem] w-[9rem]"
-          animate={{ y: [0, -10, 0], rotate: active ? [0, -2, 2, 0] : 0 }}
-          transition={{
-            y: { duration: 5.8, repeat: Infinity, ease: "easeInOut" },
-            rotate: { duration: 7.2, repeat: Infinity, ease: "easeInOut" },
-          }}
-        >
-          <div
-            className="absolute inset-0 rounded-full blur-[26px]"
-            style={{
-              background: `radial-gradient(circle, ${glow} 0%, ${hexToRgba(feature.color, 0.08)} 48%, transparent 72%)`,
-            }}
-          />
-
-          <motion.div
-            className="absolute inset-x-[-0.8rem] top-1/2 h-7 -translate-y-1/2 rounded-[50%] border"
-            style={{
-              borderColor: border,
-              boxShadow: `0 0 18px ${hexToRgba(feature.color, 0.24)}`,
-            }}
-            animate={{ rotate: active ? [0, 8, -8, 0] : [0, 4, -4, 0] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          />
-
-          <motion.div
-            className="absolute inset-2 rounded-full border"
-            style={{ borderColor: hexToRgba(feature.color, 0.48) }}
-            animate={{ rotate: 360 }}
-            transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-          />
-
-          <div
-            className="absolute inset-4 rounded-full border"
-            style={{
-              borderColor: border,
-              background: `radial-gradient(circle at 32% 28%, ${hexToRgba(feature.color, 0.92)} 0%, ${hexToRgba(
-                feature.secondary,
-                0.72
-              )} 32%, rgba(17, 12, 30, 0.98) 100%)`,
-              boxShadow: `0 0 32px ${hexToRgba(feature.color, 0.3)}, inset -12px -12px 28px rgba(0,0,0,0.42), inset 6px 6px 18px ${hexToRgba(
-                feature.color,
-                0.28
-              )}`,
-            }}
-          >
-            <div
-              className="absolute inset-[18%] rounded-full"
-              style={{
-                background: `radial-gradient(circle at 75% 75%, ${hexToRgba(feature.secondary, 0.25)} 0%, transparent 58%)`,
-              }}
-            />
-            <div className="absolute inset-0 flex items-center justify-center text-white/95">
-              {featureIcon(feature.id, "h-10 w-10 drop-shadow-[0_0_12px_rgba(255,255,255,0.25)]")}
-            </div>
-          </div>
-
-          <span
-            className="absolute right-5 top-5 h-2.5 w-2.5 rounded-full"
-            style={{
-              background: ring,
-              boxShadow: `0 0 12px ${ring}`,
-            }}
-          />
-        </motion.div>
+        <OrbitSymbol feature={feature} active={active} />
 
         <div
-          className="pixel-cut mt-3 inline-flex min-w-[10rem] items-center justify-center gap-2 border px-4 py-3 text-center"
+          className="pixel-cut mt-3 inline-flex min-w-[10.8rem] items-center justify-center gap-2 border px-4 py-3 text-center"
           style={{
             borderColor: border,
             background:
@@ -714,23 +798,16 @@ function FeatureNode({
             boxShadow: `0 0 20px ${labelGlow}, inset 0 0 0 1px rgba(255,255,255,0.05)`,
           }}
         >
-          <span
-            className="flex h-4 w-4 items-center justify-center rounded-full border"
-            style={{
-              borderColor: border,
-              color: feature.color,
-              background: hexToRgba(feature.color, 0.08),
-            }}
-          >
-            {featureIcon(feature.id, "h-2.5 w-2.5")}
-          </span>
+          <div className="relative h-5 w-5 overflow-hidden rounded-full border" style={{ borderColor: border }}>
+            <FeatureArt feature={feature} className="h-full w-full" sizes="20px" />
+          </div>
           <span className="font-display text-[0.56rem] uppercase tracking-[0.2em]" style={{ color: "#f8ebff" }}>
             {feature.title}
           </span>
         </div>
       </div>
     </motion.button>
-  )
+  );
 }
 
 function OrbitFocusPanel({ activeFeature }: { activeFeature: Feature }) {
@@ -756,6 +833,9 @@ function OrbitFocusPanel({ activeFeature }: { activeFeature: Feature }) {
           }}
         />
         <div className="relative">
+          <div className="mb-3 flex items-center justify-center">
+            <FeatureArt feature={activeFeature} className="h-14 w-14" sizes="56px" />
+          </div>
           <div className="flex items-center justify-center gap-2" style={{ color: activeFeature.color }}>
             {featureIcon(activeFeature.id, "h-4 w-4")}
             <p className="font-display text-[0.52rem] uppercase tracking-[0.18em]">{activeFeature.eyebrow}</p>
@@ -765,7 +845,7 @@ function OrbitFocusPanel({ activeFeature }: { activeFeature: Feature }) {
         </div>
       </div>
     </motion.div>
-  )
+  );
 }
 
 function MobileFeatureCard({
@@ -773,9 +853,9 @@ function MobileFeatureCard({
   active,
   onSelect,
 }: {
-  feature: Feature
-  active: boolean
-  onSelect: (featureId: FeatureId) => void
+  feature: Feature;
+  active: boolean;
+  onSelect: (featureId: FeatureId) => void;
 }) {
   return (
     <motion.button
@@ -797,17 +877,16 @@ function MobileFeatureCard({
         }}
       />
       <div className="relative flex items-start gap-3">
-        <span
-          className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border"
+        <div
+          className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border"
           style={{
             borderColor: hexToRgba(feature.color, 0.52),
-            color: feature.color,
-            background: `radial-gradient(circle, ${hexToRgba(feature.color, 0.2)} 0%, rgba(5, 5, 16, 0.2) 100%)`,
+            background: `radial-gradient(circle, ${hexToRgba(feature.color, 0.18)} 0%, rgba(5, 5, 16, 0.2) 100%)`,
             boxShadow: `0 0 14px ${hexToRgba(feature.color, 0.18)}`,
           }}
         >
-          {featureIcon(feature.id, "h-5 w-5")}
-        </span>
+          <FeatureArt feature={feature} className="h-full w-full" sizes="56px" />
+        </div>
         <div className="min-w-0">
           <p className="font-display text-[0.52rem] uppercase tracking-[0.24em]" style={{ color: feature.color }}>
             {feature.eyebrow}
@@ -819,15 +898,15 @@ function MobileFeatureCard({
         </div>
       </div>
     </motion.button>
-  )
+  );
 }
 
 function DesktopLanding({
   activeFeature,
   onSelect,
 }: {
-  activeFeature: Feature
-  onSelect: (featureId: FeatureId) => void
+  activeFeature: Feature;
+  onSelect: (featureId: FeatureId) => void;
 }) {
   return (
     <div className="hidden w-full flex-col items-center lg:flex">
@@ -845,9 +924,10 @@ function DesktopLanding({
         </a>
       </section>
 
-      <section id="orbita" className="relative h-[54rem] w-full max-w-[1240px]">
+      <section id="orbita" className="relative h-[58rem] w-full max-w-[1240px]">
         <OrbitBackdrop />
         <GalaxyCore />
+        <OrbitCore />
 
         {features.map((feature) => (
           <FeatureNode
@@ -861,15 +941,15 @@ function DesktopLanding({
         <OrbitFocusPanel activeFeature={activeFeature} />
       </section>
     </div>
-  )
+  );
 }
 
 function MobileLanding({
   activeFeature,
   onSelect,
 }: {
-  activeFeature: Feature
-  onSelect: (featureId: FeatureId) => void
+  activeFeature: Feature;
+  onSelect: (featureId: FeatureId) => void;
 }) {
   return (
     <div className="flex w-full max-w-xl flex-col items-center gap-6 lg:hidden">
@@ -879,8 +959,9 @@ function MobileLanding({
       </section>
 
       <div className="relative w-full overflow-hidden px-2 pt-2">
-        <div className="relative h-[22rem] w-full">
+        <div className="relative h-[24rem] w-full">
           <GalaxyCore compact />
+          <OrbitCore compact />
         </div>
       </div>
 
@@ -895,12 +976,12 @@ function MobileLanding({
         ))}
       </div>
     </div>
-  )
+  );
 }
 
 export function PokestorLanding() {
-  const [activeFeatureId, setActiveFeatureId] = useState<FeatureId>("pokedex")
-  const activeFeature = features.find((feature) => feature.id === activeFeatureId) ?? features[0]
+  const [activeFeatureId, setActiveFeatureId] = useState<FeatureId>("pokedex");
+  const activeFeature = features.find((feature) => feature.id === activeFeatureId) ?? features[0];
 
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-[#04010b] text-white">
@@ -924,5 +1005,5 @@ export function PokestorLanding() {
         <MobileLanding activeFeature={activeFeature} onSelect={setActiveFeatureId} />
       </div>
     </main>
-  )
+  );
 }
