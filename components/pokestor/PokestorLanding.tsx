@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowDown,
@@ -146,7 +146,7 @@ const elementRunes = [
 function coreFieldWrapperClass(compact: boolean) {
   return compact
     ? "absolute left-1/2 top-[49%] h-[18rem] w-full max-w-[18.75rem] -translate-x-1/2 -translate-y-1/2 sm:h-[24rem] sm:max-w-[28rem]"
-    : "absolute left-1/2 top-[42%] h-[28rem] w-[46rem] -translate-x-1/2 -translate-y-1/2";
+    : "absolute left-1/2 top-1/2 h-[28rem] w-[46rem] -translate-x-1/2 -translate-y-1/2";
 }
 
 function hexToRgba(hex: string, alpha: number) {
@@ -595,7 +595,7 @@ function CoreOrbitForeground({ compact = false }: { compact?: boolean }) {
 }
 
 function OrbitCore({ compact = false }: { compact?: boolean }) {
-  const shellClassName = compact ? "top-[49%] h-[13rem] w-[13rem]" : "top-[43%] h-[18rem] w-[18rem]";
+  const shellClassName = compact ? "top-[49%] h-[13rem] w-[13rem]" : "top-1/2 h-[18rem] w-[18rem]";
   const beltClassName = compact ? "h-[1.2rem]" : "h-[1.65rem]";
 
   return (
@@ -834,12 +834,21 @@ function WelcomeModule({ activeFeature, className = "" }: { activeFeature: Featu
   );
 }
 
-function OrbitSymbol({ feature, active }: { feature: Feature; active: boolean }) {
-  const frontClipId = `${feature.id}-ring-front`;
+function OrbitSymbol({
+  feature,
+  active,
+  className = "",
+}: {
+  feature: Feature;
+  active: boolean;
+  className?: string;
+}) {
+  const clipScope = useId().replace(/[^a-zA-Z0-9_-]/g, "");
+  const frontClipId = `${clipScope}-${feature.id}-ring-front`;
   const ringDuration = active ? 10 : 13;
 
   return (
-    <div className="relative h-[10.6rem] w-[10.6rem]">
+    <div className={`relative h-[10.6rem] w-[10.6rem] ${className}`}>
       <div
         className="absolute inset-[18%] rounded-full blur-[34px]"
         style={{
@@ -1063,10 +1072,10 @@ function FeatureNode({
   );
 }
 
-function OrbitFocusPanel({ activeFeature }: { activeFeature: Feature }) {
+function OrbitFocusPanel({ activeFeature, className = "" }: { activeFeature: Feature; className?: string }) {
   return (
     <motion.div
-      className="absolute bottom-8 left-1/2 hidden w-[24rem] -translate-x-1/2 lg:block"
+      className={`relative ${className}`}
       initial={{ opacity: 0, y: 18 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.55 }}
@@ -1129,16 +1138,9 @@ function MobileFeatureCard({
           background: `radial-gradient(circle at top right, ${hexToRgba(feature.color, 0.18)} 0%, transparent 55%)`,
         }}
       />
-      <div className="relative flex items-start gap-3">
-        <div
-          className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border"
-          style={{
-            borderColor: hexToRgba(feature.color, 0.52),
-            background: `radial-gradient(circle, ${hexToRgba(feature.color, 0.18)} 0%, rgba(5, 5, 16, 0.2) 100%)`,
-            boxShadow: `0 0 14px ${hexToRgba(feature.color, 0.18)}`,
-          }}
-        >
-          <FeatureArt feature={feature} className="h-full w-full" />
+      <div className="relative flex items-center gap-3">
+        <div className="shrink-0">
+          <OrbitSymbol feature={feature} active={active} className="h-[5.15rem] w-[5.15rem]" />
         </div>
         <div className="min-w-0">
           <p className="font-display text-[0.52rem] uppercase tracking-[0.24em]" style={{ color: feature.color }}>
@@ -1175,6 +1177,8 @@ function DesktopLanding({
           <span className="font-display">Ver orbita</span>
           <ArrowDown className="h-4 w-4" strokeWidth={1.8} />
         </a>
+
+        <OrbitFocusPanel activeFeature={activeFeature} className="mt-8 w-full max-w-[24rem]" />
       </section>
 
       <section id="orbita" className="relative h-[58rem] w-full max-w-[1240px]">
@@ -1191,8 +1195,6 @@ function DesktopLanding({
             onSelect={onSelect}
           />
         ))}
-
-        <OrbitFocusPanel activeFeature={activeFeature} />
       </section>
     </div>
   );
