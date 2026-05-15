@@ -595,12 +595,12 @@ function CoreOrbitForeground({ compact = false }: { compact?: boolean }) {
 }
 
 function OrbitCore({ compact = false }: { compact?: boolean }) {
-  const shellClassName = compact ? "h-[13rem] w-[13rem]" : "h-[18rem] w-[18rem]";
+  const shellClassName = compact ? "top-[49%] h-[13rem] w-[13rem]" : "top-[43%] h-[18rem] w-[18rem]";
   const beltClassName = compact ? "h-[1.2rem]" : "h-[1.65rem]";
 
   return (
     <motion.div
-      className={`absolute left-1/2 top-[43%] -translate-x-1/2 -translate-y-1/2 ${shellClassName}`}
+      className={`absolute left-1/2 -translate-x-1/2 -translate-y-1/2 ${shellClassName}`}
       initial={{ opacity: 0, scale: 0.92 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 1.1, delay: 0.15 }}
@@ -667,10 +667,13 @@ function OrbitCore({ compact = false }: { compact?: boolean }) {
 }
 
 function HeroBrand({ activeFeature, compact = false }: { activeFeature: Feature; compact?: boolean }) {
-  const heroLogoWrapperClass = compact ? "h-[8.1rem] w-[min(96vw,27rem)]" : "h-[12.6rem] w-[min(96vw,58rem)]";
+  const heroLogoWrapperClass = compact ? "h-[8.8rem] w-[min(96vw,25.5rem)]" : "h-[12.6rem] w-[min(96vw,58rem)]";
   const heroLogoImageClass = compact
-    ? "scale-[1.16] -translate-x-[1.1%] translate-y-[4.4%]"
+    ? "scale-[1.22] -translate-x-[0.35%] translate-y-[2.2%]"
     : "scale-[1.18] -translate-x-[1.2%] translate-y-[4.8%]";
+  const heroLogoShadowClass = compact
+    ? "drop-shadow-[0_0_18px_rgba(244,114,182,0.14)] saturate-[0.98]"
+    : "drop-shadow-[0_0_28px_rgba(122,92,255,0.28)]";
 
   return (
     <motion.div
@@ -699,7 +702,7 @@ function HeroBrand({ activeFeature, compact = false }: { activeFeature: Feature;
           src={brandLogoPath}
           alt="Pokestor"
           draggable="false"
-          className={`absolute inset-0 h-full w-full object-contain drop-shadow-[0_0_28px_rgba(122,92,255,0.28)] ${heroLogoImageClass}`}
+          className={`absolute inset-0 h-full w-full object-contain ${heroLogoShadowClass} ${heroLogoImageClass}`}
         />
       </div>
 
