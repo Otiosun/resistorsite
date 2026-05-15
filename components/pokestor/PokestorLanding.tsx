@@ -159,19 +159,27 @@ function featureIcon(featureId: FeatureId, className: string) {
 function TopNav() {
   return (
     <motion.header
-      className="pointer-events-none fixed inset-x-0 top-0 z-40 px-4 py-5 sm:px-6 lg:px-10"
+      className="pointer-events-none fixed inset-x-0 top-0 z-40 border-b border-white/8 bg-[rgba(4,2,12,0.82)] shadow-[0_14px_40px_rgba(0,0,0,0.28)] backdrop-blur-xl"
       initial={{ opacity: 0, y: -18 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}
     >
-      <div className="mx-auto flex max-w-[1500px] items-center justify-between">
+      <div
+        className="absolute inset-x-0 bottom-0 h-px"
+        style={{
+          background:
+            "linear-gradient(90deg, transparent 0%, rgba(212, 140, 255, 0.4) 30%, rgba(103, 215, 255, 0.35) 70%, transparent 100%)",
+        }}
+      />
+
+      <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-2 px-3 py-3 sm:px-6 sm:py-4 lg:px-10">
         <a
           href="#universo"
-          className="pointer-events-auto inline-flex items-center gap-3 text-white/90 transition-transform hover:scale-[1.02]"
+          className="pointer-events-auto inline-flex min-w-0 flex-1 items-center gap-2 text-white/90 transition-transform hover:scale-[1.02] sm:gap-3"
         >
-          <span className="relative flex h-9 w-9 items-center justify-center">
+          <span className="relative flex h-8 w-8 shrink-0 items-center justify-center sm:h-9 sm:w-9">
             <span
-              className="absolute h-6 w-6 rotate-45 rounded-[6px] border"
+              className="absolute h-5 w-5 rotate-45 rounded-[6px] border sm:h-6 sm:w-6"
               style={{
                 borderColor: "rgba(168, 85, 247, 0.65)",
                 boxShadow: "0 0 22px rgba(96, 165, 250, 0.38)",
@@ -179,11 +187,11 @@ function TopNav() {
                   "radial-gradient(circle at 45% 45%, rgba(125, 211, 252, 0.95) 0%, rgba(168, 85, 247, 0.8) 48%, rgba(10, 3, 20, 0.2) 100%)",
               }}
             />
-            <span className="absolute h-8 w-[2px] rounded-full bg-cyan-200/80 blur-[1px]" />
-            <span className="absolute h-[2px] w-8 rounded-full bg-fuchsia-200/80 blur-[1px]" />
+            <span className="absolute h-7 w-[2px] rounded-full bg-cyan-200/80 blur-[1px] sm:h-8" />
+            <span className="absolute h-[2px] w-7 rounded-full bg-fuchsia-200/80 blur-[1px] sm:w-8" />
           </span>
           <span
-            className="font-brand text-[2.15rem] uppercase leading-none tracking-[0.12em] text-transparent sm:text-[2.5rem]"
+            className="truncate font-brand text-[1.5rem] uppercase leading-none tracking-[0.08em] text-transparent min-[400px]:text-[1.7rem] sm:text-[2.2rem] sm:tracking-[0.12em] lg:text-[2.5rem]"
             style={{
               backgroundImage: "linear-gradient(180deg, #f7f3ff 0%, #8de1ff 30%, #ee9fff 78%, #a45bff 100%)",
               WebkitBackgroundClip: "text",
@@ -195,21 +203,21 @@ function TopNav() {
           </span>
         </a>
 
-        <div className="pointer-events-auto flex items-center gap-3">
+        <div className="pointer-events-auto flex shrink-0 items-center gap-2 sm:gap-3">
           <a
             href="#orbita"
             aria-label="Ir para a órbita principal"
-            className="pixel-cut flex h-12 w-12 items-center justify-center border bg-black/25 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-fuchsia-300/80"
+            className="pixel-cut hidden items-center justify-center border bg-black/25 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-fuchsia-300/80 min-[390px]:flex h-10 w-10 sm:h-12 sm:w-12"
             style={{
               borderColor: "rgba(218, 170, 255, 0.45)",
               boxShadow: "0 0 20px rgba(180, 99, 255, 0.18)",
             }}
           >
-            <Globe2 className="h-5 w-5 text-fuchsia-100" strokeWidth={1.65} />
+            <Globe2 className="h-4 w-4 text-fuchsia-100 sm:h-5 sm:w-5" strokeWidth={1.65} />
           </a>
           <a
             href="#jornada"
-            className="pixel-cut inline-flex h-12 items-center gap-3 border px-5 text-[0.64rem] uppercase tracking-[0.2em] text-fuchsia-50 transition-all duration-300 hover:-translate-y-0.5"
+            className="pixel-cut inline-flex h-10 items-center gap-2 border px-3 text-[0.54rem] uppercase tracking-[0.16em] text-fuchsia-50 transition-all duration-300 hover:-translate-y-0.5 min-[400px]:px-4 min-[400px]:text-[0.58rem] sm:h-12 sm:gap-3 sm:px-5 sm:text-[0.64rem] sm:tracking-[0.2em]"
             style={{
               borderColor: "rgba(240, 171, 252, 0.6)",
               background:
@@ -218,7 +226,7 @@ function TopNav() {
             }}
           >
             <span className="font-display">Entrar</span>
-            <ArrowRight className="h-4 w-4 text-fuchsia-100" strokeWidth={1.75} />
+            <ArrowRight className="h-3.5 w-3.5 text-fuchsia-100 sm:h-4 sm:w-4" strokeWidth={1.75} />
           </a>
         </div>
       </div>
@@ -910,7 +918,7 @@ export function PokestorLanding() {
 
       <div
         id="universo"
-        className="relative z-10 mx-auto flex w-full max-w-[1580px] flex-col px-4 pb-16 pt-24 sm:px-6 lg:px-10"
+        className="relative z-10 mx-auto flex w-full max-w-[1580px] flex-col px-4 pb-16 pt-28 sm:px-6 sm:pt-32 lg:px-10"
       >
         <DesktopLanding activeFeature={activeFeature} onSelect={setActiveFeatureId} />
         <MobileLanding activeFeature={activeFeature} onSelect={setActiveFeatureId} />
