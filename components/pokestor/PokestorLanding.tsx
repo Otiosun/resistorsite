@@ -52,7 +52,8 @@ const features: Feature[] = [
     color: "#d48cff",
     secondary: "#7c3aed",
     surface: "#2d1452",
-    assetPath: "pokestor-assets/pokedex.png",
+    assetPath: "pokestor-assets/captura.png",
+    assetClassName: "scale-[0.94]",
     orbit: { x: 50, y: 15 },
   },
   {
@@ -64,8 +65,7 @@ const features: Feature[] = [
     color: "#7df9ae",
     secondary: "#0f9f6e",
     surface: "#0d4941",
-    assetPath: "pokestor-assets/captura.png",
-    assetClassName: "scale-[0.94]",
+    assetPath: "pokestor-assets/pokedex.png",
     orbit: { x: 86, y: 43 },
   },
   {
@@ -77,8 +77,8 @@ const features: Feature[] = [
     color: "#ffcf6d",
     secondary: "#c58620",
     surface: "#62410e",
-    assetPath: "pokestor-assets/exploracao.png",
-    assetClassName: "scale-[0.96]",
+    assetPath: "pokestor-assets/canal.png",
+    assetClassName: "scale-[1.06]",
     orbit: { x: 74, y: 79 },
   },
   {
@@ -90,8 +90,8 @@ const features: Feature[] = [
     color: "#5bd9ff",
     secondary: "#1d8fd6",
     surface: "#0f3774",
-    assetPath: "pokestor-assets/canal.png",
-    assetClassName: "scale-[1.06]",
+    assetPath: "pokestor-assets/exploracao.png",
+    assetClassName: "scale-[0.96]",
     orbit: { x: 26, y: 79 },
   },
   {
