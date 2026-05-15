@@ -52,7 +52,7 @@ const features: Feature[] = [
     color: "#d48cff",
     secondary: "#7c3aed",
     surface: "#2d1452",
-    assetPath: "pokestor-assets/captura.png",
+    assetPath: "pokestor-assets/pokedex.png",
     assetClassName: "scale-[0.94]",
     orbit: { x: 50, y: 15 },
   },
@@ -65,7 +65,7 @@ const features: Feature[] = [
     color: "#7df9ae",
     secondary: "#0f9f6e",
     surface: "#0d4941",
-    assetPath: "pokestor-assets/pokedex.png",
+    assetPath: "pokestor-assets/captura.png",
     orbit: { x: 86, y: 43 },
   },
   {
@@ -77,7 +77,7 @@ const features: Feature[] = [
     color: "#ffcf6d",
     secondary: "#c58620",
     surface: "#62410e",
-    assetPath: "pokestor-assets/canal.png",
+    assetPath: "pokestor-assets/exploracao.png",
     assetClassName: "scale-[1.06]",
     orbit: { x: 74, y: 79 },
   },
@@ -90,7 +90,7 @@ const features: Feature[] = [
     color: "#5bd9ff",
     secondary: "#1d8fd6",
     surface: "#0f3774",
-    assetPath: "pokestor-assets/exploracao.png",
+    assetPath: "pokestor-assets/canal.png",
     assetClassName: "scale-[0.96]",
     orbit: { x: 26, y: 79 },
   },
@@ -145,7 +145,7 @@ const elementRunes = [
 
 function coreFieldWrapperClass(compact: boolean) {
   return compact
-    ? "absolute left-1/2 top-[49%] h-[20rem] w-[22rem] -translate-x-1/2 -translate-y-1/2 sm:h-[24rem] sm:w-[28rem]"
+    ? "absolute left-1/2 top-[49%] h-[18rem] w-full max-w-[18.75rem] -translate-x-1/2 -translate-y-1/2 sm:h-[24rem] sm:max-w-[28rem]"
     : "absolute left-1/2 top-[42%] h-[28rem] w-[46rem] -translate-x-1/2 -translate-y-1/2";
 }
 
@@ -227,7 +227,7 @@ function TopNav() {
               src={brandLogoPath}
               alt="Pokestor"
               draggable="false"
-              className="absolute inset-0 h-full w-full object-contain object-left drop-shadow-[0_0_16px_rgba(137,92,246,0.28)]"
+              className="absolute inset-0 h-full w-full object-contain object-left drop-shadow-[0_0_12px_rgba(212,140,255,0.18)] contrast-[1.02] saturate-[1.02]"
             />
           </div>
         </a>
@@ -667,18 +667,20 @@ function OrbitCore({ compact = false }: { compact?: boolean }) {
 }
 
 function HeroBrand({ activeFeature, compact = false }: { activeFeature: Feature; compact?: boolean }) {
-  const heroLogoWrapperClass = compact ? "h-[8.8rem] w-[min(96vw,25.5rem)]" : "h-[12.6rem] w-[min(96vw,58rem)]";
+  const heroLogoWrapperClass = compact
+    ? "h-[7.8rem] w-full max-w-[18.5rem] sm:h-[8.8rem] sm:max-w-[20.5rem]"
+    : "h-[12.6rem] w-[min(96vw,58rem)]";
   const heroLogoImageClass = compact
-    ? "scale-[1.22] -translate-x-[0.35%] translate-y-[2.2%]"
+    ? "scale-[1.1] -translate-x-[1.1%] translate-y-[1.4%]"
     : "scale-[1.18] -translate-x-[1.2%] translate-y-[4.8%]";
   const heroLogoShadowClass = compact
-    ? "drop-shadow-[0_0_18px_rgba(244,114,182,0.14)] saturate-[0.98]"
+    ? "drop-shadow-[0_0_12px_rgba(212,140,255,0.2)] contrast-[1.03] saturate-[1.02]"
     : "drop-shadow-[0_0_28px_rgba(122,92,255,0.28)]";
 
   return (
     <motion.div
       className={`relative z-10 mx-auto flex max-w-[48rem] flex-col items-center text-center ${
-        compact ? "px-4" : "px-6"
+        compact ? "w-full px-3" : "px-6"
       }`}
       initial={{ opacity: 0, y: 18 }}
       animate={{ opacity: 1, y: 0 }}

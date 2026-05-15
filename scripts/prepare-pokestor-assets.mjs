@@ -7,11 +7,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const sourceMap = new Map([
-  ["eventos", "c:/Users/natan/Downloads/ChatGPT Image 15 de mai. de 2026, 00_37_12 (5).png"],
-  ["exploracao", "c:/Users/natan/Downloads/ChatGPT Image 15 de mai. de 2026, 00_37_11 (3).png"],
-  ["canal", "c:/Users/natan/Downloads/ChatGPT Image 15 de mai. de 2026, 00_37_12 (4).png"],
-  ["pokedex", "c:/Users/natan/Downloads/ChatGPT Image 15 de mai. de 2026, 00_37_11 (1).png"],
-  ["captura", "c:/Users/natan/Downloads/ChatGPT Image 15 de mai. de 2026, 00_37_11 (2).png"],
+  ["eventos", "c:/Users/natan/Downloads/Design sem nome/2.png"],
+  ["exploracao", "c:/Users/natan/Downloads/Design sem nome/3.png"],
+  ["canal", "c:/Users/natan/Downloads/Design sem nome/4.png"],
+  ["pokedex", "c:/Users/natan/Downloads/Design sem nome/1.png"],
+  ["captura", "c:/Users/natan/Downloads/Design sem nome/5.png"],
   ["core", "c:/Users/natan/Downloads/Design sem nome (3).png"],
   ["logo", "c:/Users/natan/Downloads/cab5cf29-41ce-4ec5-a472-b6c1e88ddd9b (1).png"],
 ]);
