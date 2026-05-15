@@ -529,8 +529,16 @@ function CoreOrbitForeground({ compact = false }: { compact?: boolean }) {
               values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"
             />
           </filter>
+          <filter id={`core-front-hot-glow-${scope}`} x="-30%" y="-60%" width="160%" height="240%">
+            <feGaussianBlur stdDeviation="16" result="blurred" />
+            <feColorMatrix
+              in="blurred"
+              type="matrix"
+              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1.2 0"
+            />
+          </filter>
           <clipPath id={`core-front-clip-${scope}`}>
-            <rect x="122" y="280" width="756" height="92" rx="46" />
+            <ellipse cx="500" cy="297" rx="366" ry="58" />
           </clipPath>
         </defs>
 
@@ -541,9 +549,19 @@ function CoreOrbitForeground({ compact = false }: { compact?: boolean }) {
             rx="332"
             ry="112"
             stroke={`url(#core-front-primary-${scope})`}
-            strokeWidth="18"
+            strokeWidth="28"
+            filter={`url(#core-front-hot-glow-${scope})`}
+            opacity="0.3"
+          />
+          <ellipse
+            cx="500"
+            cy="280"
+            rx="332"
+            ry="112"
+            stroke={`url(#core-front-primary-${scope})`}
+            strokeWidth="20"
             filter={`url(#core-front-glow-${scope})`}
-            opacity="0.98"
+            opacity="1"
           />
           <ellipse
             cx="500"
@@ -551,17 +569,17 @@ function CoreOrbitForeground({ compact = false }: { compact?: boolean }) {
             rx="308"
             ry="100"
             stroke={`url(#core-front-secondary-${scope})`}
-            strokeWidth="8"
-            opacity="0.92"
+            strokeWidth="10"
+            opacity="0.98"
           />
           <ellipse
             cx="500"
             cy="280"
-            rx="352"
-            ry="122"
-            stroke="rgba(196, 181, 253, 0.22)"
-            strokeWidth="2"
-            strokeDasharray="2 18"
+            rx="281"
+            ry="88"
+            stroke="rgba(250, 245, 255, 0.55)"
+            strokeWidth="2.6"
+            opacity="0.72"
           />
         </g>
       </motion.svg>
@@ -571,6 +589,7 @@ function CoreOrbitForeground({ compact = false }: { compact?: boolean }) {
 
 function OrbitCore({ compact = false }: { compact?: boolean }) {
   const shellClassName = compact ? "h-[13rem] w-[13rem]" : "h-[18rem] w-[18rem]";
+  const beltClassName = compact ? "h-[1.2rem]" : "h-[1.65rem]";
 
   return (
     <motion.div
@@ -580,31 +599,48 @@ function OrbitCore({ compact = false }: { compact?: boolean }) {
       transition={{ duration: 1.1, delay: 0.15 }}
     >
       <div
-        className="absolute inset-[7%] rounded-full blur-[42px]"
+        className="absolute inset-[6%] rounded-full blur-[48px]"
         style={{
           background:
-            "radial-gradient(circle, rgba(255, 94, 247, 0.28) 0%, rgba(116, 64, 255, 0.2) 44%, transparent 76%)",
+            "radial-gradient(circle, rgba(255, 94, 247, 0.34) 0%, rgba(116, 64, 255, 0.24) 42%, transparent 76%)",
         }}
       />
       <div
-        className="absolute inset-[4%] rounded-full"
+        className="absolute inset-[2.6%] rounded-full"
         style={{
           boxShadow:
-            "0 0 0 1px rgba(252, 228, 255, 0.22), 0 0 24px rgba(219, 92, 255, 0.18), inset 0 0 0 1px rgba(255,255,255,0.06)",
+            "0 0 0 1px rgba(255, 232, 255, 0.28), 0 0 34px rgba(232, 102, 255, 0.24), 0 0 58px rgba(113, 82, 255, 0.14), inset 0 0 0 1px rgba(255,255,255,0.07)",
         }}
       />
       <div
-        className="absolute inset-[8%] rounded-full"
+        className="absolute inset-[6.5%] rounded-full"
         style={{
-          border: "1px solid rgba(249, 168, 255, 0.22)",
-          boxShadow: "inset 0 0 18px rgba(199, 76, 255, 0.18), inset 0 -10px 18px rgba(0,0,0,0.28)",
+          border: "1px solid rgba(251, 190, 255, 0.28)",
+          boxShadow:
+            "inset 0 0 22px rgba(210, 84, 255, 0.22), inset 0 -14px 22px rgba(0,0,0,0.32), inset 0 14px 18px rgba(255,255,255,0.05)",
         }}
       />
       <div
-        className="absolute inset-[13%] rounded-full"
+        className="absolute inset-[10.5%] rounded-full"
         style={{
           background:
-            "radial-gradient(circle at 34% 28%, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.04) 12%, rgba(18,8,34,0) 54%)",
+            "radial-gradient(circle at 34% 28%, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.05) 12%, rgba(18,8,34,0) 54%)",
+        }}
+      />
+      <div
+        className={`absolute inset-x-[13%] top-1/2 ${beltClassName} -translate-y-1/2 rounded-full`}
+        style={{
+          background:
+            "linear-gradient(90deg, rgba(6,4,18,0) 0%, rgba(10,7,26,0.28) 12%, rgba(5,4,16,0.6) 28%, rgba(0,0,0,0.72) 50%, rgba(5,4,16,0.6) 72%, rgba(10,7,26,0.28) 88%, rgba(6,4,18,0) 100%)",
+          boxShadow: "0 0 16px rgba(8, 6, 20, 0.32)",
+        }}
+      />
+      <div
+        className={`absolute inset-x-[18%] top-1/2 ${beltClassName} -translate-y-1/2 rounded-full blur-[6px]`}
+        style={{
+          background:
+            "linear-gradient(90deg, rgba(96,165,250,0) 0%, rgba(122,92,255,0.16) 22%, rgba(255,135,245,0.22) 50%, rgba(122,92,255,0.16) 78%, rgba(96,165,250,0) 100%)",
+          opacity: 0.9,
         }}
       />
       <motion.div
@@ -616,7 +652,7 @@ function OrbitCore({ compact = false }: { compact?: boolean }) {
           src={coreAssetPath}
           alt="Nucleo orbital"
           draggable="false"
-          className="absolute inset-0 h-full w-full object-contain drop-shadow-[0_0_34px_rgba(230,120,255,0.34)]"
+          className="absolute inset-0 h-full w-full object-contain drop-shadow-[0_0_42px_rgba(230,120,255,0.38)] saturate-[1.06] contrast-[1.03]"
         />
       </motion.div>
     </motion.div>
