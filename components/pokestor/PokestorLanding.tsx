@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowDown,
@@ -16,6 +16,7 @@ import {
   MoonStar,
   Radio,
   Sparkles,
+  X,
   Zap,
 } from "lucide-react";
 import { Starfield } from "./Starfield";
@@ -107,16 +108,6 @@ const features: Feature[] = [
     assetClassName: "scale-[1.06]",
     orbit: { x: 14, y: 43 },
   },
-];
-
-const orbitMarkers = [
-  { x: 50, y: 15.5 },
-  { x: 77, y: 27.5 },
-  { x: 88, y: 54 },
-  { x: 70, y: 83.5 },
-  { x: 30, y: 83.5 },
-  { x: 12, y: 54 },
-  { x: 23, y: 27.5 },
 ];
 
 const galaxyParticles = Array.from({ length: 90 }, (_, index) => {
@@ -222,7 +213,7 @@ function TopNav() {
           href="#universo"
           className="pointer-events-auto inline-flex min-w-0 flex-1 items-center gap-3 text-white/90 transition-transform hover:scale-[1.02]"
         >
-          <div className="relative h-11 w-[11rem] min-w-0 sm:h-[3.35rem] sm:w-[13.9rem] lg:w-[15.4rem]">
+          <div className="relative h-[3rem] w-[12rem] min-w-0 sm:h-[3.65rem] sm:w-[15rem] lg:w-[16.6rem]">
             <img
               src={brandLogoPath}
               alt="Pokestor"
@@ -338,23 +329,6 @@ function OrbitBackdrop() {
         />
       </svg>
 
-      {orbitMarkers.map((marker, index) => (
-        <motion.div
-          key={`${marker.x}-${marker.y}`}
-          className="absolute h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border"
-          style={{
-            left: `${marker.x}%`,
-            top: `${marker.y}%`,
-            borderColor: "rgba(248, 250, 252, 0.75)",
-            background: "rgba(11, 7, 22, 0.78)",
-            boxShadow: "0 0 14px rgba(232, 121, 249, 0.22)",
-          }}
-          animate={{ scale: [1, 1.12, 1], opacity: [0.75, 1, 0.75] }}
-          transition={{ duration: 3.2, repeat: Infinity, delay: index * 0.22 }}
-        >
-          <span className="absolute inset-1 rounded-full bg-fuchsia-300/80" />
-        </motion.div>
-      ))}
     </div>
   );
 }
@@ -1072,40 +1046,102 @@ function FeatureNode({
   );
 }
 
-function OrbitFocusPanel({ activeFeature, className = "" }: { activeFeature: Feature; className?: string }) {
+function DesktopFeatureDialog({
+  activeFeature,
+  onClose,
+}: {
+  activeFeature: Feature;
+  onClose: () => void;
+}) {
   return (
     <motion.div
-      className={`relative ${className}`}
-      initial={{ opacity: 0, y: 18 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.55 }}
+      className="fixed inset-0 z-[70] hidden items-start justify-center px-6 pb-10 pt-28 lg:flex"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
     >
-      <div
-        className="pixel-cut relative overflow-hidden border px-5 py-5 text-center"
+      <motion.div
+        className="absolute inset-0 bg-[rgba(3,2,12,0.62)] backdrop-blur-md"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      />
+      <motion.div
+        className="pixel-cut relative z-10 flex max-h-[78vh] w-full max-w-[34rem] flex-col overflow-hidden border"
         style={{
-          borderColor: hexToRgba(activeFeature.color, 0.44),
-          background: "linear-gradient(180deg, rgba(12, 9, 26, 0.95) 0%, rgba(7, 6, 17, 0.86) 100%)",
-          boxShadow: `0 0 26px ${hexToRgba(activeFeature.color, 0.12)}`,
+          borderColor: hexToRgba(activeFeature.color, 0.5),
+          background: "linear-gradient(180deg, rgba(12, 9, 26, 0.97) 0%, rgba(7, 6, 17, 0.92) 100%)",
+          boxShadow: `0 0 36px ${hexToRgba(activeFeature.color, 0.18)}, inset 0 0 0 1px rgba(255,255,255,0.05)`,
         }}
+        initial={{ opacity: 0, y: -20, scale: 0.96 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: -14, scale: 0.97 }}
+        transition={{ duration: 0.28, ease: "easeOut" }}
+        onClick={(event) => event.stopPropagation()}
       >
         <div
-          className="absolute inset-0 opacity-20"
+          className="absolute inset-0 opacity-24"
           style={{
             background: `radial-gradient(circle at top center, ${hexToRgba(activeFeature.color, 0.18)} 0%, transparent 58%)`,
           }}
         />
-        <div className="relative">
-          <div className="mb-3 flex items-center justify-center">
-            <FeatureArt feature={activeFeature} className="h-14 w-14" />
+        <div className="relative flex items-center justify-between gap-4 border-b px-5 py-4" style={{ borderColor: hexToRgba(activeFeature.color, 0.18) }}>
+          <div className="min-w-0">
+            <div className="flex items-center gap-2" style={{ color: activeFeature.color }}>
+              {featureIcon(activeFeature.id, "h-4 w-4")}
+              <p className="font-display text-[0.52rem] uppercase tracking-[0.18em]">{activeFeature.eyebrow}</p>
+            </div>
+            <h3 className="mt-2 font-terminal text-[1.5rem] leading-none text-white">{activeFeature.title}</h3>
           </div>
-          <div className="flex items-center justify-center gap-2" style={{ color: activeFeature.color }}>
-            {featureIcon(activeFeature.id, "h-4 w-4")}
-            <p className="font-display text-[0.52rem] uppercase tracking-[0.18em]">{activeFeature.eyebrow}</p>
-          </div>
-          <h3 className="mt-3 font-terminal text-[1.6rem] leading-none text-white">{activeFeature.title}</h3>
-          <p className="mt-3 text-sm leading-6 text-slate-200/74">{activeFeature.detail}</p>
+          <button
+            type="button"
+            aria-label="Fechar detalhes"
+            className="pixel-cut inline-flex h-10 w-10 shrink-0 items-center justify-center border text-fuchsia-50 transition-transform duration-300 hover:-translate-y-0.5"
+            style={{
+              borderColor: hexToRgba(activeFeature.color, 0.34),
+              background: "rgba(9, 8, 22, 0.58)",
+              boxShadow: `0 0 18px ${hexToRgba(activeFeature.color, 0.1)}`,
+            }}
+            onClick={onClose}
+          >
+            <X className="h-4 w-4" strokeWidth={1.9} />
+          </button>
         </div>
-      </div>
+
+        <div className="relative min-h-0 overflow-y-auto px-6 pb-6 pt-5 text-center">
+          <div className="mb-4 flex items-center justify-center">
+            <div
+              className="rounded-full border p-2"
+              style={{
+                borderColor: hexToRgba(activeFeature.color, 0.28),
+                background: `radial-gradient(circle, ${hexToRgba(activeFeature.color, 0.12)} 0%, rgba(4, 4, 14, 0.06) 100%)`,
+              }}
+            >
+              <FeatureArt feature={activeFeature} className="h-18 w-18" />
+            </div>
+          </div>
+
+          <p className="mx-auto max-w-[26rem] font-terminal text-[2rem] leading-[1.02] text-slate-50">
+            {activeFeature.description}
+          </p>
+          <p className="mx-auto mt-4 max-w-[27rem] text-base leading-7 text-slate-200/78">{activeFeature.detail}</p>
+
+          <div className="mt-6 flex items-center justify-center gap-3 text-fuchsia-100/70">
+            <span className="h-px w-16 bg-fuchsia-300/35" />
+            <div
+              className="relative h-9 w-9 overflow-hidden rounded-full border p-1"
+              style={{
+                borderColor: hexToRgba(activeFeature.color, 0.5),
+                background: hexToRgba(activeFeature.color, 0.08),
+              }}
+            >
+              <FeatureArt feature={activeFeature} className="h-full w-full" />
+            </div>
+            <span className="h-px w-16 bg-cyan-300/35" />
+          </div>
+        </div>
+      </motion.div>
     </motion.div>
   );
 }
@@ -1159,9 +1195,13 @@ function MobileFeatureCard({
 function DesktopLanding({
   activeFeature,
   onSelect,
+  dialogFeature,
+  onCloseDialog,
 }: {
   activeFeature: Feature;
   onSelect: (featureId: FeatureId) => void;
+  dialogFeature: Feature | null;
+  onCloseDialog: () => void;
 }) {
   return (
     <div className="hidden w-full flex-col items-center lg:flex">
@@ -1177,8 +1217,6 @@ function DesktopLanding({
           <span className="font-display">Ver orbita</span>
           <ArrowDown className="h-4 w-4" strokeWidth={1.8} />
         </a>
-
-        <OrbitFocusPanel activeFeature={activeFeature} className="mt-8 w-full max-w-[24rem]" />
       </section>
 
       <section id="orbita" className="relative h-[58rem] w-full max-w-[1240px]">
@@ -1196,6 +1234,8 @@ function DesktopLanding({
           />
         ))}
       </section>
+
+      <AnimatePresence>{dialogFeature ? <DesktopFeatureDialog activeFeature={dialogFeature} onClose={onCloseDialog} /> : null}</AnimatePresence>
     </div>
   );
 }
@@ -1238,7 +1278,31 @@ function MobileLanding({
 
 export function PokestorLanding() {
   const [activeFeatureId, setActiveFeatureId] = useState<FeatureId>("pokedex");
+  const [desktopDialogFeatureId, setDesktopDialogFeatureId] = useState<FeatureId | null>(null);
   const activeFeature = features.find((feature) => feature.id === activeFeatureId) ?? features[0];
+  const desktopDialogFeature =
+    features.find((feature) => feature.id === desktopDialogFeatureId) ?? null;
+
+  useEffect(() => {
+    if (!desktopDialogFeatureId) {
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setDesktopDialogFeatureId(null);
+      }
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [desktopDialogFeatureId]);
 
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-[#04010b] text-white">
@@ -1258,7 +1322,15 @@ export function PokestorLanding() {
         id="universo"
         className="relative z-10 mx-auto flex w-full max-w-[1580px] flex-col px-4 pb-16 pt-28 sm:px-6 sm:pt-32 lg:px-10"
       >
-        <DesktopLanding activeFeature={activeFeature} onSelect={setActiveFeatureId} />
+        <DesktopLanding
+          activeFeature={activeFeature}
+          onSelect={(featureId) => {
+            setActiveFeatureId(featureId);
+            setDesktopDialogFeatureId(featureId);
+          }}
+          dialogFeature={desktopDialogFeature}
+          onCloseDialog={() => setDesktopDialogFeatureId(null)}
+        />
         <MobileLanding activeFeature={activeFeature} onSelect={setActiveFeatureId} />
       </div>
     </main>
