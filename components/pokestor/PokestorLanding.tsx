@@ -200,7 +200,7 @@ function TopNav() {
           href="#universo"
           className="pointer-events-auto inline-flex min-w-0 flex-1 items-center gap-3 text-white/90 transition-transform hover:scale-[1.02]"
         >
-          <div className="relative h-[3rem] w-[12rem] min-w-0 sm:h-[3.65rem] sm:w-[15rem] lg:w-[16.6rem]">
+          <div className="relative h-[4.15rem] w-[min(18rem,calc(100vw-8rem))] min-w-0 sm:h-[5.45rem] sm:w-[22.5rem] lg:h-[6rem] lg:w-[25rem]">
             <img
               src={brandLogoPath}
               alt="Pokestor"
@@ -336,8 +336,8 @@ function GalaxyCore({ compact = false }: { compact?: boolean }) {
         viewBox="0 0 1000 560"
         fill="none"
         aria-hidden="true"
-        animate={{ rotate: [0, 2, 0, -2, 0] }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+        animate={compact ? undefined : { rotate: [0, 2, 0, -2, 0] }}
+        transition={compact ? undefined : { duration: 18, repeat: Infinity, ease: "easeInOut" }}
       >
         <defs>
           <linearGradient
@@ -458,8 +458,8 @@ function CoreOrbitForeground({ compact = false }: { compact?: boolean }) {
         viewBox="0 0 1000 560"
         fill="none"
         aria-hidden="true"
-        animate={{ rotate: [0, 2, 0, -2, 0] }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+        animate={compact ? undefined : { rotate: [0, 2, 0, -2, 0] }}
+        transition={compact ? undefined : { duration: 18, repeat: Infinity, ease: "easeInOut" }}
       >
         <defs>
           <linearGradient
@@ -613,8 +613,8 @@ function OrbitCore({ compact = false }: { compact?: boolean }) {
       />
       <motion.div
         className="relative h-full w-full"
-        animate={{ scale: [1, 1.01, 1], rotate: [0, 0.75, 0, -0.75, 0] }}
-        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+        animate={compact ? undefined : { scale: [1, 1.01, 1], rotate: [0, 0.75, 0, -0.75, 0] }}
+        transition={compact ? undefined : { duration: 9, repeat: Infinity, ease: "easeInOut" }}
       >
         <img
           src={coreAssetPath}
@@ -799,10 +799,14 @@ function OrbitSymbol({
   feature,
   active,
   className = "",
+  animated = true,
+  showRings = true,
 }: {
   feature: Feature;
   active: boolean;
   className?: string;
+  animated?: boolean;
+  showRings?: boolean;
 }) {
   const clipScope = useId().replace(/[^a-zA-Z0-9_-]/g, "");
   const frontClipId = `${clipScope}-${feature.id}-ring-front`;
@@ -820,41 +824,49 @@ function OrbitSymbol({
         }}
       />
 
-      <motion.div
-        className="absolute inset-0 z-0"
-        animate={{ rotate: 360 }}
-        transition={{ duration: ringDuration, repeat: Infinity, ease: "linear" }}
-      >
-        <svg className="absolute inset-0 z-0 h-full w-full overflow-visible" viewBox="0 0 220 220" aria-hidden="true">
-          <ellipse
-            cx="110"
-            cy="114"
-            rx="82"
-            ry="30"
-            fill="none"
-            stroke={hexToRgba(feature.color, active ? 0.46 : 0.34)}
-            strokeWidth="4"
-          />
-          <ellipse
-            cx="110"
-            cy="114"
-            rx="66"
-            ry="22"
-            fill="none"
-            stroke={hexToRgba(feature.secondary, active ? 0.28 : 0.2)}
-            strokeWidth="2"
-            strokeDasharray="9 11"
-          />
-        </svg>
-      </motion.div>
+      {showRings ? (
+        <motion.div
+          className="absolute inset-0 z-0"
+          animate={animated ? { rotate: 360 } : undefined}
+          transition={animated ? { duration: ringDuration, repeat: Infinity, ease: "linear" } : undefined}
+        >
+          <svg className="absolute inset-0 z-0 h-full w-full overflow-visible" viewBox="0 0 220 220" aria-hidden="true">
+            <ellipse
+              cx="110"
+              cy="114"
+              rx="82"
+              ry="30"
+              fill="none"
+              stroke={hexToRgba(feature.color, active ? 0.46 : 0.34)}
+              strokeWidth="4"
+            />
+            <ellipse
+              cx="110"
+              cy="114"
+              rx="66"
+              ry="22"
+              fill="none"
+              stroke={hexToRgba(feature.secondary, active ? 0.28 : 0.2)}
+              strokeWidth="2"
+              strokeDasharray="9 11"
+            />
+          </svg>
+        </motion.div>
+      ) : null}
 
       <motion.div
         className="absolute inset-[12%] z-10 rounded-full"
-        animate={{ y: [0, -10, 0], rotate: active ? [0, -2, 2, 0] : [0, -1.5, 1.5, 0] }}
-        transition={{
-          y: { duration: 5.8, repeat: Infinity, ease: "easeInOut" },
-          rotate: { duration: 7.2, repeat: Infinity, ease: "easeInOut" },
-        }}
+        animate={
+          animated ? { y: [0, -10, 0], rotate: active ? [0, -2, 2, 0] : [0, -1.5, 1.5, 0] } : undefined
+        }
+        transition={
+          animated
+            ? {
+                y: { duration: 5.8, repeat: Infinity, ease: "easeInOut" },
+                rotate: { duration: 7.2, repeat: Infinity, ease: "easeInOut" },
+              }
+            : undefined
+        }
       >
         <div
           className="absolute inset-0 rounded-full border"
@@ -948,40 +960,42 @@ function OrbitSymbol({
         </div>
       </motion.div>
 
-      <motion.div
-        className="absolute inset-0 z-20 pointer-events-none"
-        animate={{ rotate: 360 }}
-        transition={{ duration: ringDuration, repeat: Infinity, ease: "linear" }}
-      >
-        <svg className="absolute inset-0 h-full w-full overflow-visible" viewBox="0 0 220 220" aria-hidden="true">
-          <defs>
-            <clipPath id={frontClipId}>
-              <rect x="20" y="96" width="180" height="36" rx="18" />
-            </clipPath>
-          </defs>
-          <g clipPath={`url(#${frontClipId})`}>
-            <ellipse
-              cx="110"
-              cy="114"
-              rx="82"
-              ry="30"
-              fill="none"
-              stroke={hexToRgba(feature.color, active ? 0.94 : 0.84)}
-              strokeWidth="5"
-            />
-            <ellipse
-              cx="110"
-              cy="114"
-              rx="66"
-              ry="22"
-              fill="none"
-              stroke={hexToRgba(feature.secondary, active ? 0.84 : 0.72)}
-              strokeWidth="2.5"
-              strokeDasharray="10 12"
-            />
-          </g>
-        </svg>
-      </motion.div>
+      {showRings ? (
+        <motion.div
+          className="absolute inset-0 z-20 pointer-events-none"
+          animate={animated ? { rotate: 360 } : undefined}
+          transition={animated ? { duration: ringDuration, repeat: Infinity, ease: "linear" } : undefined}
+        >
+          <svg className="absolute inset-0 h-full w-full overflow-visible" viewBox="0 0 220 220" aria-hidden="true">
+            <defs>
+              <clipPath id={frontClipId}>
+                <rect x="20" y="96" width="180" height="36" rx="18" />
+              </clipPath>
+            </defs>
+            <g clipPath={`url(#${frontClipId})`}>
+              <ellipse
+                cx="110"
+                cy="114"
+                rx="82"
+                ry="30"
+                fill="none"
+                stroke={hexToRgba(feature.color, active ? 0.94 : 0.84)}
+                strokeWidth="5"
+              />
+              <ellipse
+                cx="110"
+                cy="114"
+                rx="66"
+                ry="22"
+                fill="none"
+                stroke={hexToRgba(feature.secondary, active ? 0.84 : 0.72)}
+                strokeWidth="2.5"
+                strokeDasharray="10 12"
+              />
+            </g>
+          </svg>
+        </motion.div>
+      ) : null}
     </div>
   );
 }
@@ -1033,7 +1047,7 @@ function FeatureNode({
   );
 }
 
-function DesktopFeatureDialog({
+function FeatureDialog({
   activeFeature,
   onClose,
 }: {
@@ -1042,7 +1056,7 @@ function DesktopFeatureDialog({
 }) {
   return (
     <motion.div
-      className="fixed inset-0 z-[70] hidden items-start justify-center px-6 pb-10 pt-28 lg:flex"
+      className="fixed inset-0 z-[70] flex items-end justify-center px-0 pt-20 sm:px-4 sm:pt-24 lg:items-start lg:px-6 lg:pb-10 lg:pt-28"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -1055,15 +1069,15 @@ function DesktopFeatureDialog({
         exit={{ opacity: 0 }}
       />
       <motion.div
-        className="pixel-cut relative z-10 flex max-h-[78vh] w-full max-w-[34rem] flex-col overflow-hidden border"
+        className="relative z-10 flex max-h-[84vh] w-full max-w-[34rem] flex-col overflow-hidden rounded-t-[1.35rem] border sm:rounded-[1.35rem] lg:pixel-cut lg:rounded-none"
         style={{
           borderColor: hexToRgba(activeFeature.color, 0.5),
           background: "linear-gradient(180deg, rgba(12, 9, 26, 0.97) 0%, rgba(7, 6, 17, 0.92) 100%)",
           boxShadow: `0 0 36px ${hexToRgba(activeFeature.color, 0.18)}, inset 0 0 0 1px rgba(255,255,255,0.05)`,
         }}
-        initial={{ opacity: 0, y: -20, scale: 0.96 }}
+        initial={{ opacity: 0, y: 28, scale: 0.96 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: -14, scale: 0.97 }}
+        exit={{ opacity: 0, y: 16, scale: 0.97 }}
         transition={{ duration: 0.28, ease: "easeOut" }}
         onClick={(event) => event.stopPropagation()}
       >
@@ -1073,7 +1087,10 @@ function DesktopFeatureDialog({
             background: `radial-gradient(circle at top center, ${hexToRgba(activeFeature.color, 0.18)} 0%, transparent 58%)`,
           }}
         />
-        <div className="relative flex items-center justify-between gap-4 border-b px-5 py-4" style={{ borderColor: hexToRgba(activeFeature.color, 0.18) }}>
+        <div
+          className="relative flex items-center justify-between gap-4 border-b px-4 py-4 sm:px-5"
+          style={{ borderColor: hexToRgba(activeFeature.color, 0.18) }}
+        >
           <div className="min-w-0">
             <div className="flex items-center gap-2" style={{ color: activeFeature.color }}>
               {featureIcon(activeFeature.id, "h-4 w-4")}
@@ -1096,7 +1113,7 @@ function DesktopFeatureDialog({
           </button>
         </div>
 
-        <div className="relative min-h-0 overflow-y-auto px-6 pb-6 pt-5 text-center">
+        <div className="relative min-h-0 overflow-y-auto px-5 pb-6 pt-5 text-center sm:px-6">
           <div className="mb-4 flex items-center justify-center">
             <div
               className="rounded-full border p-2"
@@ -1163,7 +1180,13 @@ function MobileFeatureCard({
       />
       <div className="relative flex items-center gap-3">
         <div className="shrink-0">
-          <OrbitSymbol feature={feature} active={active} className="h-[5.15rem] w-[5.15rem]" />
+          <OrbitSymbol
+            feature={feature}
+            active={active}
+            className="h-[5.15rem] w-[5.15rem]"
+            animated={false}
+            showRings={false}
+          />
         </div>
         <div className="min-w-0">
           <p className="font-display text-[0.52rem] uppercase tracking-[0.24em]" style={{ color: feature.color }}>
@@ -1182,13 +1205,9 @@ function MobileFeatureCard({
 function DesktopLanding({
   activeFeature,
   onSelect,
-  dialogFeature,
-  onCloseDialog,
 }: {
   activeFeature: Feature;
   onSelect: (featureId: FeatureId) => void;
-  dialogFeature: Feature | null;
-  onCloseDialog: () => void;
 }) {
   return (
     <div className="hidden w-full flex-col items-center lg:flex">
@@ -1221,8 +1240,6 @@ function DesktopLanding({
           />
         ))}
       </section>
-
-      <AnimatePresence>{dialogFeature ? <DesktopFeatureDialog activeFeature={dialogFeature} onClose={onCloseDialog} /> : null}</AnimatePresence>
     </div>
   );
 }
@@ -1265,20 +1282,19 @@ function MobileLanding({
 
 export function PokestorLanding() {
   const [activeFeatureId, setActiveFeatureId] = useState<FeatureId>("pokedex");
-  const [desktopDialogFeatureId, setDesktopDialogFeatureId] = useState<FeatureId | null>(null);
+  const [dialogFeatureId, setDialogFeatureId] = useState<FeatureId | null>(null);
   const activeFeature = features.find((feature) => feature.id === activeFeatureId) ?? features[0];
-  const desktopDialogFeature =
-    features.find((feature) => feature.id === desktopDialogFeatureId) ?? null;
+  const dialogFeature = features.find((feature) => feature.id === dialogFeatureId) ?? null;
 
   useEffect(() => {
-    if (!desktopDialogFeatureId) {
+    if (!dialogFeatureId) {
       return;
     }
 
     const previousOverflow = document.body.style.overflow;
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        setDesktopDialogFeatureId(null);
+        setDialogFeatureId(null);
       }
     };
 
@@ -1289,7 +1305,7 @@ export function PokestorLanding() {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [desktopDialogFeatureId]);
+  }, [dialogFeatureId]);
 
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-[#04010b] text-white">
@@ -1307,19 +1323,24 @@ export function PokestorLanding() {
 
       <div
         id="universo"
-        className="relative z-10 mx-auto flex w-full max-w-[1580px] flex-col px-4 pb-16 pt-28 sm:px-6 sm:pt-32 lg:px-10"
+        className="relative z-10 mx-auto flex w-full max-w-[1580px] flex-col px-4 pb-16 pt-32 sm:px-6 sm:pt-36 lg:px-10"
       >
         <DesktopLanding
           activeFeature={activeFeature}
           onSelect={(featureId) => {
             setActiveFeatureId(featureId);
-            setDesktopDialogFeatureId(featureId);
+            setDialogFeatureId(featureId);
           }}
-          dialogFeature={desktopDialogFeature}
-          onCloseDialog={() => setDesktopDialogFeatureId(null)}
         />
-        <MobileLanding activeFeature={activeFeature} onSelect={setActiveFeatureId} />
+        <MobileLanding
+          activeFeature={activeFeature}
+          onSelect={(featureId) => {
+            setActiveFeatureId(featureId);
+            setDialogFeatureId(featureId);
+          }}
+        />
       </div>
+      <AnimatePresence>{dialogFeature ? <FeatureDialog activeFeature={dialogFeature} onClose={() => setDialogFeatureId(null)} /> : null}</AnimatePresence>
     </main>
   );
 }
