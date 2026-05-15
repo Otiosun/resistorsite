@@ -8,17 +8,13 @@ import {
   Award,
   BookOpen,
   Crosshair,
-  Droplets,
-  Flame,
   Flag,
   Globe2,
-  Leaf,
-  MoonStar,
   Radio,
   Sparkles,
   X,
-  Zap,
 } from "lucide-react";
+import { elementRuneIcons } from "./ElementIcons";
 import { Starfield } from "./Starfield";
 
 type FeatureId = "pokedex" | "captura" | "exploracao" | "canal" | "eventos";
@@ -124,15 +120,6 @@ const galaxyParticles = Array.from({ length: 90 }, (_, index) => {
     opacity: 0.4 + (index % 5) * 0.08,
   };
 });
-
-const elementRunes = [
-  { Icon: Leaf, color: "#7df9ae" },
-  { Icon: Flame, color: "#ff875f" },
-  { Icon: Droplets, color: "#67d7ff" },
-  { Icon: Zap, color: "#ffd86d" },
-  { Icon: Sparkles, color: "#ef8fff" },
-  { Icon: MoonStar, color: "#d3b3ff" },
-];
 
 function coreFieldWrapperClass(compact: boolean) {
   return compact
@@ -702,7 +689,7 @@ function HeroBrand({ activeFeature, compact = false }: { activeFeature: Feature;
       )}
 
       <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
-        {elementRunes.map(({ Icon, color }, index) => (
+        {elementRuneIcons.map(({ Icon, color }, index) => (
           <motion.span
             key={color}
             className="inline-flex h-8 w-8 items-center justify-center rounded-full border"
@@ -716,7 +703,7 @@ function HeroBrand({ activeFeature, compact = false }: { activeFeature: Feature;
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.75 + index * 0.06, type: "spring", stiffness: 180, damping: 12 }}
           >
-            <Icon className="h-4 w-4" strokeWidth={1.9} />
+            <Icon className="h-4 w-4" />
           </motion.span>
         ))}
       </div>
