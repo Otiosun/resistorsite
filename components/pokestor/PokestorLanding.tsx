@@ -667,6 +667,11 @@ function OrbitCore({ compact = false }: { compact?: boolean }) {
 }
 
 function HeroBrand({ activeFeature, compact = false }: { activeFeature: Feature; compact?: boolean }) {
+  const heroLogoWrapperClass = compact ? "h-[8.1rem] w-[min(96vw,27rem)]" : "h-[12.6rem] w-[min(96vw,58rem)]";
+  const heroLogoImageClass = compact
+    ? "scale-[1.16] -translate-x-[1.1%] translate-y-[4.4%]"
+    : "scale-[1.18] -translate-x-[1.2%] translate-y-[4.8%]";
+
   return (
     <motion.div
       className={`relative z-10 mx-auto flex max-w-[48rem] flex-col items-center text-center ${
@@ -689,12 +694,12 @@ function HeroBrand({ activeFeature, compact = false }: { activeFeature: Feature;
         <span className="font-display">{activeFeature.eyebrow}</span>
       </div>
 
-      <div className={`relative ${compact ? "h-[6.9rem] w-[min(94vw,24rem)]" : "h-[10.4rem] w-[min(94vw,49rem)]"}`}>
+      <div className={`relative overflow-visible ${heroLogoWrapperClass}`}>
         <img
           src={brandLogoPath}
           alt="Pokestor"
           draggable="false"
-          className="absolute inset-0 h-full w-full object-contain drop-shadow-[0_0_28px_rgba(122,92,255,0.28)]"
+          className={`absolute inset-0 h-full w-full object-contain drop-shadow-[0_0_28px_rgba(122,92,255,0.28)] ${heroLogoImageClass}`}
         />
       </div>
 
