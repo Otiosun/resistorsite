@@ -888,27 +888,91 @@ function OrbitSymbol({ feature, active }: { feature: Feature; active: boolean })
           className="absolute inset-0 rounded-full border"
           style={{
             borderColor: hexToRgba(feature.color, active ? 0.74 : 0.45),
-            background: `radial-gradient(circle at 34% 28%, rgba(255,255,255,0.18) 0%, ${hexToRgba(
+            background: `radial-gradient(circle at 34% 24%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.1) 7%, ${hexToRgba(
               feature.color,
-              active ? 0.14 : 0.09
-            )} 14%, ${hexToRgba(feature.surface, active ? 0.88 : 0.78)} 42%, rgba(4, 4, 14, 0.97) 100%)`,
-            boxShadow: `0 0 30px ${hexToRgba(feature.color, 0.24)}, inset -14px -14px 26px rgba(0,0,0,0.38), inset 6px 6px 18px ${hexToRgba(
+              active ? 0.17 : 0.11
+            )} 18%, ${hexToRgba(feature.surface, active ? 0.56 : 0.47)} 44%, rgba(4, 4, 14, 0.78) 100%)`,
+            boxShadow: `0 0 30px ${hexToRgba(feature.color, 0.24)}, inset -16px -16px 26px rgba(0,0,0,0.26), inset 7px 7px 18px rgba(255,255,255,0.05), inset 0 0 22px ${hexToRgba(
               feature.color,
               0.1
             )}`,
           }}
         />
         <div
-          className="absolute inset-x-[16%] top-1/2 z-[11] h-[1.05rem] -translate-y-1/2 rounded-full blur-[8px]"
+          className="absolute inset-[2.5%] rounded-full"
           style={{
-            background: `linear-gradient(90deg, transparent 0%, ${hexToRgba(feature.color, 0.14)} 18%, rgba(0,0,0,0.32) 50%, ${hexToRgba(
+            boxShadow: `inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -18px 28px rgba(0,0,0,0.16), inset 18px 18px 26px rgba(255,255,255,0.03)`,
+          }}
+        />
+        <div
+          className="absolute inset-[6%] rounded-full opacity-90"
+          style={{
+            background: `radial-gradient(circle at 29% 21%, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.14) 10%, rgba(255,255,255,0) 28%), radial-gradient(circle at 70% 76%, ${hexToRgba(
               feature.color,
-              0.14
+              active ? 0.16 : 0.1
+            )} 0%, rgba(255,255,255,0) 46%)`,
+          }}
+        />
+        <div
+          className="absolute left-[18%] top-[15%] z-[11] h-[21%] w-[37%] rounded-full blur-[7px]"
+          style={{
+            background: "linear-gradient(180deg, rgba(255,255,255,0.32) 0%, rgba(255,255,255,0.05) 100%)",
+            opacity: active ? 0.9 : 0.72,
+            transform: "rotate(-18deg)",
+          }}
+        />
+        <div
+          className="absolute inset-[13%] rounded-full border"
+          style={{
+            borderColor: hexToRgba(feature.color, active ? 0.34 : 0.22),
+            boxShadow: `inset 0 0 14px ${hexToRgba(feature.color, 0.14)}`,
+          }}
+        />
+        <div
+          className="absolute inset-[20%] rounded-full blur-[24px]"
+          style={{
+            background: `radial-gradient(circle, ${hexToRgba(feature.color, active ? 0.18 : 0.1)} 0%, transparent 70%)`,
+          }}
+        />
+        <div
+          className="absolute inset-x-[16%] top-[52%] z-[11] h-[0.95rem] -translate-y-1/2 rounded-full blur-[8px]"
+          style={{
+            background: `linear-gradient(90deg, transparent 0%, ${hexToRgba(feature.color, 0.12)} 18%, rgba(0,0,0,0.22) 50%, ${hexToRgba(
+              feature.color,
+              0.12
             )} 82%, transparent 100%)`,
           }}
         />
-        <div className="absolute inset-[7%] overflow-hidden rounded-full border border-white/8 bg-[rgba(3,4,14,0.22)]">
-          <FeatureArt feature={feature} className="h-full w-full" />
+        <div
+          className="absolute inset-[12.5%] overflow-hidden rounded-full border"
+          style={{
+            borderColor: "rgba(255,255,255,0.12)",
+            background:
+              "radial-gradient(circle at center, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.015) 44%, rgba(6,6,18,0.08) 100%)",
+            boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.03)",
+          }}
+        >
+          <div
+            className="absolute inset-0 opacity-40"
+            style={{
+              background: `radial-gradient(circle at 50% 56%, ${hexToRgba(feature.color, 0.18)} 0%, transparent 62%)`,
+            }}
+          />
+          <FeatureArt feature={feature} className="h-full w-full scale-[0.9] opacity-[0.96]" />
+        </div>
+        <div
+          className="pointer-events-none absolute inset-[8%] z-[12] rounded-full backdrop-blur-[1px]"
+          style={{
+            background:
+              "radial-gradient(circle at 32% 23%, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.045) 16%, rgba(255,255,255,0) 34%), linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.015) 48%, rgba(0,0,0,0.08) 100%)",
+          }}
+        >
+          <div
+            className="absolute inset-[10%] rounded-full"
+            style={{
+              boxShadow: `inset 0 0 10px rgba(255,255,255,0.04), inset 0 -12px 16px rgba(0,0,0,0.12)`,
+            }}
+          />
         </div>
       </motion.div>
 
