@@ -426,36 +426,43 @@ function GalaxyCore({ compact = false }: { compact?: boolean }) {
               values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"
             />
           </filter>
+          <clipPath id={`core-back-clip-${scope}`}>
+            <rect x="0" y="0" width="1000" height="282" />
+            <rect x="0" y="282" width="310" height="278" />
+            <rect x="690" y="282" width="310" height="278" />
+          </clipPath>
         </defs>
 
-        <ellipse
-          cx="500"
-          cy="280"
-          rx="332"
-          ry="112"
-          stroke={`url(#core-primary-${scope})`}
-          strokeWidth="18"
-          filter={`url(#soft-glow-${scope})`}
-          opacity="0.95"
-        />
-        <ellipse
-          cx="500"
-          cy="280"
-          rx="308"
-          ry="100"
-          stroke={`url(#core-secondary-${scope})`}
-          strokeWidth="8"
-          opacity="0.85"
-        />
-        <ellipse
-          cx="500"
-          cy="280"
-          rx="352"
-          ry="122"
-          stroke="rgba(196, 181, 253, 0.12)"
-          strokeWidth="2"
-          strokeDasharray="2 18"
-        />
+        <g clipPath={`url(#core-back-clip-${scope})`}>
+          <ellipse
+            cx="500"
+            cy="280"
+            rx="332"
+            ry="112"
+            stroke={`url(#core-primary-${scope})`}
+            strokeWidth="18"
+            filter={`url(#soft-glow-${scope})`}
+            opacity="0.95"
+          />
+          <ellipse
+            cx="500"
+            cy="280"
+            rx="308"
+            ry="100"
+            stroke={`url(#core-secondary-${scope})`}
+            strokeWidth="8"
+            opacity="0.85"
+          />
+          <ellipse
+            cx="500"
+            cy="280"
+            rx="352"
+            ry="122"
+            stroke="rgba(196, 181, 253, 0.12)"
+            strokeWidth="2"
+            strokeDasharray="2 18"
+          />
+        </g>
 
         {galaxyParticles.map((particle, index) => (
           <circle
@@ -538,7 +545,7 @@ function CoreOrbitForeground({ compact = false }: { compact?: boolean }) {
             />
           </filter>
           <clipPath id={`core-front-clip-${scope}`}>
-            <ellipse cx="500" cy="297" rx="366" ry="58" />
+            <ellipse cx="500" cy="296" rx="390" ry="66" />
           </clipPath>
         </defs>
 
