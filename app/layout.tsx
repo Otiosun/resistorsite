@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next"
 import { Pixelify_Sans, Press_Start_2P, Space_Grotesk, VT323 } from "next/font/google"
 import { Analytics } from "@vercel/analytics/react"
-import { resolveSiteUrl, siteDescription, siteKeywords, siteName, siteTitle, siteUrl } from "@/lib/site"
+import { resolveSiteUrl, siteDescription, siteKeywords, siteName, siteTitle, siteUrl, siteWhatsAppUrl } from "@/lib/site"
 import "./globals.css"
 
 const bodyFont = Space_Grotesk({
@@ -120,6 +120,17 @@ export default function RootLayout({
             name: siteName,
             url: siteUrl,
             logo: resolveSiteUrl("/pokestor-assets/logo.webp"),
+            sameAs: siteWhatsAppUrl ? [siteWhatsAppUrl] : undefined,
+            contactPoint: siteWhatsAppUrl
+              ? [
+                  {
+                    "@type": "ContactPoint",
+                    contactType: "customer support",
+                    url: siteWhatsAppUrl,
+                    availableLanguage: ["pt-BR"],
+                  },
+                ]
+              : undefined,
           },
         ],
       }

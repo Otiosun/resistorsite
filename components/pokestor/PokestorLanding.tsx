@@ -11,6 +11,7 @@ import {
   FileText,
   Flag,
   Globe2,
+  MessageCircle,
   Radio,
   ScrollText,
   Shield,
@@ -18,6 +19,7 @@ import {
   X,
 } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
+import { siteWhatsAppUrl } from "@/lib/site";
 import { elementRuneIcons } from "./ElementIcons";
 import { Starfield } from "./Starfield";
 
@@ -125,7 +127,7 @@ const footerPanels: Record<
     eyebrow: "Privacidade visivel",
     paragraphs: [
       "Esta landing apresenta o universo Pokestor e, no estado atual, nao solicita senha, documento ou pagamento direto para navegar.",
-      "Em publicacao, qualquer coleta de navegacao deve ficar restrita a metricas essenciais, desempenho e melhoria da experiencia. Se formularios forem adicionados depois, a finalidade, o armazenamento e o canal de contato precisam ficar explicitos.",
+      "Em publicacao, qualquer coleta de navegacao deve ficar restrita a metricas essenciais, desempenho e melhoria da experiencia. Se formularios forem adicionados depois, a finalidade, o armazenamento e o canal oficial de contato precisam ficar explicitos.",
     ],
     bullets: [
       "Sem coleta de senha nesta versao da pagina",
@@ -141,7 +143,7 @@ const footerPanels: Record<
       "Ao abrir publicamente, vale manter este bloco atualizado com regras de uso, limites de responsabilidade, propriedade visual/textual e orientacoes sobre canais oficiais para evitar duvidas e imitacoes.",
     ],
     bullets: [
-      "Links oficiais devem ser priorizados no rodape",
+      "O WhatsApp oficial deve ficar visivel no rodape",
       "Conteudos e artes precisam ter autoria clara",
       "Atualize regras e contatos sempre que mudar a operacao",
     ],
@@ -150,13 +152,13 @@ const footerPanels: Record<
     title: "Seguranca e confianca",
     eyebrow: "Boas praticas",
     paragraphs: [
-      "A forma mais forte de transmitir confianca aqui nao e usar selo decorativo, e sim mostrar informacao verificavel: HTTPS ativo, politicas acessiveis, canais oficiais visiveis e nenhuma promessa falsa de seguranca.",
-      "Como esta landing nao faz checkout, o melhor bloco de confianca e direto: sem pagamento nesta pagina, sem pedido de senha e com documentos institucionais sempre ao alcance.",
+      "A forma mais forte de transmitir confianca aqui nao e usar selo decorativo, e sim mostrar informacao verificavel: HTTPS ativo, politicas acessiveis, canal oficial visivel e nenhuma promessa falsa de seguranca.",
+      "Como esta landing nao faz checkout, o melhor bloco de confianca e direto: sem pagamento nesta pagina, sem pedido de senha e com WhatsApp oficial e documentos institucionais sempre ao alcance.",
     ],
     bullets: [
-      "Publicar sempre com HTTPS no dominio final",
-      "Nao usar selo fake ou claim nao verificavel",
-      "Privacidade, termos e canais oficiais devem ficar visiveis",
+      "Sem pagamento ou checkout nesta pagina",
+      "Sem pedido de senha para navegar",
+      "WhatsApp oficial e politicas devem ficar visiveis",
     ],
   },
 };
@@ -1315,6 +1317,12 @@ function SiteFooter({
 }: {
   onOpenPanel: (panelId: FooterPanelId) => void;
 }) {
+  const factualNotes = [
+    "Esta pagina nao processa pagamento.",
+    "Nenhuma senha e exigida para navegar.",
+    siteWhatsAppUrl ? "O contato oficial aponta para o WhatsApp." : "Defina o WhatsApp oficial antes de publicar.",
+  ];
+
   return (
     <footer className="mt-18 w-full max-w-[1280px]">
       <div
@@ -1334,35 +1342,31 @@ function SiteFooter({
           }}
         />
 
-        <div className="grid gap-8 px-5 py-7 sm:px-7 lg:grid-cols-[1.2fr_0.75fr_0.95fr] lg:px-9">
+        <div className="grid gap-8 px-5 py-7 sm:px-7 lg:grid-cols-[1.08fr_0.72fr_0.9fr_0.92fr] lg:px-9">
           <div>
             <p className="font-display text-[0.56rem] uppercase tracking-[0.22em] text-fuchsia-200/78">
               Encerramento da jornada
             </p>
             <h3 className="mt-3 font-terminal text-[2rem] leading-none text-white sm:text-[2.35rem]">
-              Rodape pronto para publicar
+              Publicacao com base real
             </h3>
             <p className="mt-4 max-w-[34rem] text-sm leading-7 text-slate-200/76 sm:text-[0.98rem]">
-              Este bloco fecha a landing com navegacao util, documentos institucionais acessiveis e sinais de
-              confianca baseados em informacao real, nao em selo decorativo solto.
+              Este bloco fecha a landing com navegacao util, documentos acessiveis e um contato oficial verificavel,
+              sem depender de selo decorativo ou promessa vaga.
             </p>
 
-            <div className="mt-5 flex flex-wrap gap-2.5">
-              {[
-                "Sem checkout nesta landing",
-                "Privacidade e termos visiveis",
-                "Pronto para publicar com HTTPS",
-              ].map((item) => (
-                <span
+            <div className="mt-5 grid gap-2.5">
+              {factualNotes.map((item) => (
+                <div
                   key={item}
-                  className="inline-flex items-center rounded-full border px-3 py-2 text-[0.62rem] uppercase tracking-[0.16em] text-fuchsia-50/86"
+                  className="rounded-2xl border px-4 py-3 text-sm leading-6 text-slate-100/84"
                   style={{
                     borderColor: "rgba(212, 140, 255, 0.22)",
-                    background: "rgba(17, 12, 33, 0.72)",
+                    background: "linear-gradient(180deg, rgba(17, 12, 33, 0.92) 0%, rgba(9, 8, 21, 0.88) 100%)",
                   }}
                 >
                   {item}
-                </span>
+                </div>
               ))}
             </div>
           </div>
@@ -1433,14 +1437,60 @@ function SiteFooter({
               ))}
             </div>
           </div>
+
+          <div>
+            <p className="font-display text-[0.52rem] uppercase tracking-[0.2em] text-emerald-200/74">Contato oficial</p>
+            <div className="mt-4 grid gap-3">
+              {siteWhatsAppUrl ? (
+                <a
+                  href={siteWhatsAppUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={() =>
+                    trackEvent("cta_click", {
+                      cta: "footer_whatsapp",
+                      section: "footer",
+                      target: "whatsapp",
+                    })
+                  }
+                  className="inline-flex items-center justify-between rounded-2xl border px-4 py-3 text-sm text-slate-100/88 transition-[transform,border-color,background-color] duration-300 lg:hover:-translate-y-0.5"
+                  style={{
+                    borderColor: "rgba(94, 234, 212, 0.24)",
+                    background: "linear-gradient(180deg, rgba(10, 37, 33, 0.92) 0%, rgba(7, 19, 18, 0.9) 100%)",
+                  }}
+                >
+                  <span className="inline-flex items-center gap-3">
+                    <MessageCircle className="h-4 w-4 text-emerald-200/84" strokeWidth={1.8} />
+                    <span>WhatsApp oficial</span>
+                  </span>
+                  <ArrowRight className="h-4 w-4 text-emerald-100/76" strokeWidth={1.7} />
+                </a>
+              ) : (
+                <div
+                  className="rounded-2xl border px-4 py-3 text-sm leading-6 text-slate-100/76"
+                  style={{
+                    borderColor: "rgba(94, 234, 212, 0.18)",
+                    background: "linear-gradient(180deg, rgba(10, 37, 33, 0.82) 0%, rgba(7, 19, 18, 0.78) 100%)",
+                  }}
+                >
+                  Defina o link do WhatsApp antes da publicacao final para este bloco virar o contato oficial.
+                </div>
+              )}
+
+              <p className="text-sm leading-7 text-slate-200/72">
+                Use esse canal para avisos, direcionamento e primeiro contato. Se depois voce abrir outros canais,
+                adicione-os somente quando estiverem realmente ativos.
+              </p>
+            </div>
+          </div>
         </div>
 
         <div
           className="flex flex-col gap-3 border-t px-5 py-4 text-[0.68rem] uppercase tracking-[0.18em] text-slate-200/60 sm:px-7 lg:flex-row lg:items-center lg:justify-between lg:px-9"
           style={{ borderColor: "rgba(212, 140, 255, 0.12)" }}
         >
-          <p className="font-display">Pokestor landing pronta para canais, politicas e confianca real</p>
-          <p>Sem selo fake / Sem senha / Publicar com HTTPS</p>
+          <p className="font-display">Pokestor pronta para publicar com contato, politicas e confianca verificavel</p>
+          <p>{siteWhatsAppUrl ? "Sem pagamento / Sem senha / WhatsApp oficial ativo" : "Sem pagamento / Sem senha / Falta ligar o WhatsApp oficial"}</p>
         </div>
       </div>
     </footer>

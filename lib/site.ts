@@ -15,6 +15,9 @@ export const siteKeywords = [
   "aventura",
 ]
 
+export const siteWhatsAppUrl = process.env.NEXT_PUBLIC_WHATSAPP_URL?.trim() || null
+export const hasWhatsAppContact = Boolean(siteWhatsAppUrl)
+
 const deploymentUrl =
   process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
   (process.env.VERCEL_PROJECT_PRODUCTION_URL
