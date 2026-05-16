@@ -848,12 +848,14 @@ function WelcomeModule({ activeFeature, className = "" }: { activeFeature: Featu
 
         <div className="mt-6">
           <a
-            href="#orbita"
+            href={siteWhatsAppUrl ?? "#orbita"}
+            target={siteWhatsAppUrl ? "_blank" : undefined}
+            rel={siteWhatsAppUrl ? "noreferrer" : undefined}
             onClick={() =>
               trackEvent("cta_click", {
                 cta: "welcome_comecar_jornada",
                 section: "welcome",
-                target: "orbita",
+                target: siteWhatsAppUrl ? "whatsapp_channel" : "orbita",
               })
             }
             className="pixel-cut inline-flex items-center gap-3 border px-5 py-4 text-fuchsia-50 transition-transform duration-300 hover:-translate-y-0.5"

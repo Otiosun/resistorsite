@@ -15,7 +15,8 @@ export const siteKeywords = [
   "aventura",
 ]
 
-export const siteWhatsAppUrl = process.env.NEXT_PUBLIC_WHATSAPP_URL?.trim() || null
+export const defaultWhatsAppUrl = "https://whatsapp.com/channel/0029Vb7y772DeON8Ba0kzd0o"
+export const siteWhatsAppUrl = process.env.NEXT_PUBLIC_WHATSAPP_URL?.trim() || defaultWhatsAppUrl
 export const hasWhatsAppContact = Boolean(siteWhatsAppUrl)
 
 const deploymentUrl =
