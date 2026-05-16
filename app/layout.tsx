@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next"
 import { Pixelify_Sans, Press_Start_2P, Space_Grotesk, VT323 } from "next/font/google"
+import { resolveSiteUrl, siteDescription, siteKeywords, siteName, siteTitle, siteUrl } from "@/lib/site"
 import "./globals.css"
 
 const bodyFont = Space_Grotesk({
@@ -24,11 +25,44 @@ const terminalFont = VT323({
   variable: "--font-terminal",
 })
 
+const metadataBase = siteUrl ? new URL(siteUrl) : undefined
+
 export const metadata: Metadata = {
-  title: "Pokestor | Jornada cósmica de monstros",
-  description:
-    "Landing page neon-retro para o universo Pokestor: Pokédex, captura, exploração, eventos e canal em uma experiência inspirada em aventura espacial.",
-  keywords: ["Pokestor", "landing page", "Pokédex", "captura", "exploração", "eventos", "canal"],
+  metadataBase,
+  title: siteTitle,
+  description: siteDescription,
+  applicationName: siteName,
+  keywords: siteKeywords,
+  category: "games",
+  referrer: "origin-when-cross-origin",
+  alternates: siteUrl
+    ? {
+        canonical: "/",
+      }
+    : undefined,
+  openGraph: {
+    type: "website",
+    locale: "pt_BR",
+    url: siteUrl ?? undefined,
+    siteName,
+    title: siteTitle,
+    description: siteDescription,
+    images: [
+      {
+        url: "/social-card.png",
+        width: 1200,
+        height: 630,
+        alt: "Pokestor - jornada cosmica de monstros",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteTitle,
+    description: siteDescription,
+    images: ["/social-card.png"],
+  },
+  manifest: "/manifest.webmanifest",
   icons: {
     icon: [
       {
@@ -46,6 +80,16 @@ export const metadata: Metadata = {
     ],
     apple: "/apple-icon.png",
   },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: siteName,
+  },
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
 }
 
 export const viewport: Viewport = {
@@ -59,11 +103,38 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const structuredData = siteUrl
+    ? {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            name: siteName,
+            url: siteUrl,
+            description: siteDescription,
+            inLanguage: "pt-BR",
+          },
+          {
+            "@type": "Organization",
+            name: siteName,
+            url: siteUrl,
+            logo: resolveSiteUrl("/pokestor-assets/logo.webp"),
+          },
+        ],
+      }
+    : null
+
   return (
     <html lang="pt-BR" className="bg-background">
       <body
         className={`${bodyFont.variable} ${brandFont.variable} ${displayFont.variable} ${terminalFont.variable} min-h-screen bg-background font-sans antialiased text-foreground`}
       >
+        {structuredData ? (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+          />
+        ) : null}
         {children}
       </body>
     </html>
