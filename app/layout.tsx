@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next"
 import { Pixelify_Sans, Press_Start_2P, Space_Grotesk, VT323 } from "next/font/google"
+import { Analytics } from "@vercel/analytics/react"
 import { resolveSiteUrl, siteDescription, siteKeywords, siteName, siteTitle, siteUrl } from "@/lib/site"
 import "./globals.css"
 
@@ -135,6 +136,7 @@ export default function RootLayout({
             dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
           />
         ) : null}
+        <Analytics />
         {children}
       </body>
     </html>

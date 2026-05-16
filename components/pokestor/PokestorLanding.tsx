@@ -17,6 +17,7 @@ import {
   Sparkles,
   X,
 } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 import { elementRuneIcons } from "./ElementIcons";
 import { Starfield } from "./Starfield";
 
@@ -254,6 +255,7 @@ function TopNav() {
       <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-2 px-3 py-3 sm:px-6 sm:py-4 lg:px-10">
         <a
           href="#universo"
+          onClick={() => trackEvent("cta_click", { cta: "header_logo", section: "header", target: "universo" })}
           className="pointer-events-auto inline-flex min-w-0 flex-1 items-center gap-3 text-white/90 transition-transform hover:scale-[1.02]"
         >
           <div className="relative h-11 w-[11rem] min-w-0 overflow-visible sm:h-[3.35rem] sm:w-[13.9rem] lg:w-[15.4rem]">
@@ -273,6 +275,7 @@ function TopNav() {
           <a
             href="#orbita"
             aria-label="Ir para a orbita principal"
+            onClick={() => trackEvent("cta_click", { cta: "header_orbita", section: "header", target: "orbita" })}
             className="pixel-cut hidden h-10 w-10 items-center justify-center border bg-black/25 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-fuchsia-300/80 min-[390px]:flex sm:h-12 sm:w-12"
             style={{
               borderColor: "rgba(218, 170, 255, 0.45)",
@@ -283,6 +286,7 @@ function TopNav() {
           </a>
           <a
             href="#jornada"
+            onClick={() => trackEvent("cta_click", { cta: "header_entrar", section: "header", target: "jornada" })}
             className="pixel-cut inline-flex h-10 items-center gap-2 border px-3 text-[0.54rem] uppercase tracking-[0.16em] text-fuchsia-50 transition-all duration-300 hover:-translate-y-0.5 min-[400px]:px-4 min-[400px]:text-[0.58rem] sm:h-12 sm:gap-3 sm:px-5 sm:text-[0.64rem] sm:tracking-[0.2em]"
             style={{
               borderColor: "rgba(240, 171, 252, 0.6)",
@@ -843,6 +847,13 @@ function WelcomeModule({ activeFeature, className = "" }: { activeFeature: Featu
         <div className="mt-6">
           <a
             href="#orbita"
+            onClick={() =>
+              trackEvent("cta_click", {
+                cta: "welcome_comecar_jornada",
+                section: "welcome",
+                target: "orbita",
+              })
+            }
             className="pixel-cut inline-flex items-center gap-3 border px-5 py-4 text-fuchsia-50 transition-transform duration-300 hover:-translate-y-0.5"
             style={{
               borderColor: hexToRgba(activeFeature.color, 0.66),
@@ -1307,11 +1318,12 @@ function SiteFooter({
   return (
     <footer className="mt-18 w-full max-w-[1280px]">
       <div
-        className="relative overflow-hidden rounded-[2rem] border"
+        className="relative isolate overflow-hidden rounded-[2rem] border [contain:paint]"
         style={{
           borderColor: "rgba(212, 140, 255, 0.2)",
-          background: "linear-gradient(180deg, rgba(10, 8, 24, 0.96) 0%, rgba(6, 5, 16, 0.94) 100%)",
+          background: "linear-gradient(180deg, rgba(10, 8, 24, 1) 0%, rgba(7, 6, 18, 1) 100%)",
           boxShadow: "0 0 36px rgba(90, 32, 144, 0.12), inset 0 0 0 1px rgba(255,255,255,0.04)",
+          transform: "translateZ(0)",
         }}
       >
         <div
@@ -1366,10 +1378,22 @@ function SiteFooter({
                 <a
                   key={item.href}
                   href={item.href}
-                  className="inline-flex items-center justify-between rounded-2xl border px-4 py-3 text-sm text-slate-100/86 transition-transform duration-300 hover:-translate-y-0.5"
+                  onClick={() =>
+                    trackEvent("cta_click", {
+                      cta:
+                        item.href === "#universo"
+                          ? "footer_nav_universo"
+                          : item.href === "#jornada"
+                            ? "footer_nav_jornada"
+                            : "footer_nav_orbita",
+                      section: "footer",
+                      target: item.href.replace("#", ""),
+                    })
+                  }
+                  className="inline-flex items-center justify-between rounded-2xl border px-4 py-3 text-sm text-slate-100/86 transition-[transform,border-color,background-color] duration-300 lg:hover:-translate-y-0.5"
                   style={{
                     borderColor: "rgba(103, 215, 255, 0.16)",
-                    background: "linear-gradient(180deg, rgba(14, 12, 30, 0.82) 0%, rgba(8, 7, 20, 0.74) 100%)",
+                    background: "linear-gradient(180deg, rgba(14, 12, 30, 0.92) 0%, rgba(8, 7, 20, 0.9) 100%)",
                   }}
                 >
                   <span>{item.label}</span>
@@ -1390,11 +1414,14 @@ function SiteFooter({
                 <button
                   key={id}
                   type="button"
-                  onClick={() => onOpenPanel(id)}
-                  className="inline-flex items-center justify-between rounded-2xl border px-4 py-3 text-left text-sm text-slate-100/88 transition-transform duration-300 hover:-translate-y-0.5"
+                  onClick={() => {
+                    trackEvent("footer_panel_open", { panel: id, section: "footer" });
+                    onOpenPanel(id);
+                  }}
+                  className="inline-flex items-center justify-between rounded-2xl border px-4 py-3 text-left text-sm text-slate-100/88 transition-[transform,border-color,background-color] duration-300 lg:hover:-translate-y-0.5"
                   style={{
                     borderColor: "rgba(212, 140, 255, 0.18)",
-                    background: "linear-gradient(180deg, rgba(18, 13, 34, 0.84) 0%, rgba(8, 7, 20, 0.76) 100%)",
+                    background: "linear-gradient(180deg, rgba(18, 13, 34, 0.92) 0%, rgba(8, 7, 20, 0.9) 100%)",
                   }}
                 >
                   <span className="inline-flex items-center gap-3">
@@ -1413,7 +1440,7 @@ function SiteFooter({
           style={{ borderColor: "rgba(212, 140, 255, 0.12)" }}
         >
           <p className="font-display">Pokestor landing pronta para canais, politicas e confianca real</p>
-          <p>Sem selo fake • Sem senha • Publicar com HTTPS</p>
+          <p>Sem selo fake / Sem senha / Publicar com HTTPS</p>
         </div>
       </div>
     </footer>
@@ -1488,6 +1515,7 @@ function DesktopLanding({
 
         <a
           href="#orbita"
+          onClick={() => trackEvent("cta_click", { cta: "desktop_ver_orbita", section: "hero", target: "orbita" })}
           className="mt-8 inline-flex items-center gap-2 text-[0.68rem] uppercase tracking-[0.22em] text-cyan-200/72 transition-colors hover:text-cyan-100"
         >
           <span className="font-display">Ver orbita</span>
@@ -1558,6 +1586,17 @@ export function PokestorLanding() {
   const dialogFeature = features.find((feature) => feature.id === dialogFeatureId) ?? null;
 
   useEffect(() => {
+    if (!dialogFeatureId) {
+      return;
+    }
+
+    trackEvent("feature_dialog_open", {
+      feature: dialogFeatureId,
+      section: "feature_dialog",
+    });
+  }, [dialogFeatureId]);
+
+  useEffect(() => {
     if (!dialogFeatureId && !footerPanelId) {
       return;
     }
@@ -1600,6 +1639,7 @@ export function PokestorLanding() {
         <DesktopLanding
           activeFeature={activeFeature}
           onSelect={(featureId) => {
+            trackEvent("feature_select", { feature: featureId, surface: "desktop" });
             setActiveFeatureId(featureId);
             setDialogFeatureId(featureId);
           }}
@@ -1607,12 +1647,14 @@ export function PokestorLanding() {
         <MobileLanding
           activeFeature={activeFeature}
           onSelect={(featureId) => {
+            trackEvent("feature_select", { feature: featureId, surface: "mobile" });
             setActiveFeatureId(featureId);
             setDialogFeatureId(featureId);
           }}
         />
         <SiteFooter
           onOpenPanel={(panelId) => {
+            trackEvent("overlay_open", { overlay: panelId, surface: "footer" });
             setDialogFeatureId(null);
             setFooterPanelId(panelId);
           }}
