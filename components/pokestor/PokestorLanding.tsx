@@ -8,9 +8,12 @@ import {
   Award,
   BookOpen,
   Crosshair,
+  FileText,
   Flag,
   Globe2,
   Radio,
+  ScrollText,
+  Shield,
   Sparkles,
   X,
 } from "lucide-react";
@@ -18,6 +21,7 @@ import { elementRuneIcons } from "./ElementIcons";
 import { Starfield } from "./Starfield";
 
 type FeatureId = "pokedex" | "captura" | "exploracao" | "canal" | "eventos";
+type FooterPanelId = "privacy" | "terms" | "safety";
 
 type Feature = {
   id: FeatureId;
@@ -105,6 +109,56 @@ const features: Feature[] = [
     orbit: { x: 14, y: 43 },
   },
 ];
+
+const footerPanels: Record<
+  FooterPanelId,
+  {
+    title: string;
+    eyebrow: string;
+    paragraphs: string[];
+    bullets: string[];
+  }
+> = {
+  privacy: {
+    title: "Politica de privacidade",
+    eyebrow: "Privacidade visivel",
+    paragraphs: [
+      "Esta landing apresenta o universo Pokestor e, no estado atual, nao solicita senha, documento ou pagamento direto para navegar.",
+      "Em publicacao, qualquer coleta de navegacao deve ficar restrita a metricas essenciais, desempenho e melhoria da experiencia. Se formularios forem adicionados depois, a finalidade, o armazenamento e o canal de contato precisam ficar explicitos.",
+    ],
+    bullets: [
+      "Sem coleta de senha nesta versao da pagina",
+      "Dados sensiveis nao sao exigidos para explorar a landing",
+      "Analytics e cookies devem ser informados quando ativos",
+    ],
+  },
+  terms: {
+    title: "Termos de uso",
+    eyebrow: "Uso da pagina",
+    paragraphs: [
+      "O conteudo desta pagina apresenta a proposta, os modulos e a identidade visual do projeto. A navegacao deve ser usada apenas para consulta, descoberta e acesso aos canais oficiais publicados pelo projeto.",
+      "Ao abrir publicamente, vale manter este bloco atualizado com regras de uso, limites de responsabilidade, propriedade visual/textual e orientacoes sobre canais oficiais para evitar duvidas e imitacoes.",
+    ],
+    bullets: [
+      "Links oficiais devem ser priorizados no rodape",
+      "Conteudos e artes precisam ter autoria clara",
+      "Atualize regras e contatos sempre que mudar a operacao",
+    ],
+  },
+  safety: {
+    title: "Seguranca e confianca",
+    eyebrow: "Boas praticas",
+    paragraphs: [
+      "A forma mais forte de transmitir confianca aqui nao e usar selo decorativo, e sim mostrar informacao verificavel: HTTPS ativo, politicas acessiveis, canais oficiais visiveis e nenhuma promessa falsa de seguranca.",
+      "Como esta landing nao faz checkout, o melhor bloco de confianca e direto: sem pagamento nesta pagina, sem pedido de senha e com documentos institucionais sempre ao alcance.",
+    ],
+    bullets: [
+      "Publicar sempre com HTTPS no dominio final",
+      "Nao usar selo fake ou claim nao verificavel",
+      "Privacidade, termos e canais oficiais devem ficar visiveis",
+    ],
+  },
+};
 
 const galaxyParticles = Array.from({ length: 90 }, (_, index) => {
   const angle = (index / 90) * Math.PI * 2;
@@ -210,7 +264,7 @@ function TopNav() {
               loading="eager"
               decoding="async"
               fetchPriority="high"
-              className="absolute inset-0 h-full w-full origin-left scale-[1.5] object-contain object-left drop-shadow-[0_0_12px_rgba(212,140,255,0.18)] contrast-[1.02] saturate-[1.02]"
+              className="absolute inset-0 h-full w-full origin-left scale-[1.05] object-contain object-left drop-shadow-[0_0_12px_rgba(212,140,255,0.18)] contrast-[1.02] saturate-[1.02] sm:scale-[1.32] lg:scale-[1.5]"
             />
           </div>
         </a>
@@ -1160,6 +1214,212 @@ function FeatureDialog({
   );
 }
 
+function FooterPanelDialog({
+  panelId,
+  onClose,
+}: {
+  panelId: FooterPanelId;
+  onClose: () => void;
+}) {
+  const panel = footerPanels[panelId];
+
+  return (
+    <motion.div
+      className="fixed inset-0 z-[72] flex items-end justify-center px-0 pt-20 sm:px-4 sm:pt-24 lg:items-start lg:px-6 lg:pb-10 lg:pt-28"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+    >
+      <motion.div
+        className="absolute inset-0 bg-[rgba(3,2,12,0.68)] backdrop-blur-md"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      />
+      <motion.div
+        className="relative z-10 flex max-h-[84vh] w-full max-w-[38rem] flex-col overflow-hidden rounded-t-[1.35rem] border sm:rounded-[1.35rem] lg:pixel-cut lg:rounded-none"
+        style={{
+          borderColor: "rgba(212, 140, 255, 0.26)",
+          background: "linear-gradient(180deg, rgba(12, 9, 26, 0.98) 0%, rgba(7, 6, 17, 0.94) 100%)",
+          boxShadow: "0 0 34px rgba(168,85,247,0.14), inset 0 0 0 1px rgba(255,255,255,0.05)",
+        }}
+        initial={{ opacity: 0, y: 26, scale: 0.97 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 18, scale: 0.98 }}
+        transition={{ duration: 0.26, ease: "easeOut" }}
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="relative flex items-center justify-between gap-4 border-b px-4 py-4 sm:px-5" style={{ borderColor: "rgba(212, 140, 255, 0.16)" }}>
+          <div className="min-w-0">
+            <p className="font-display text-[0.52rem] uppercase tracking-[0.18em] text-fuchsia-200/80">{panel.eyebrow}</p>
+            <h3 className="mt-2 font-terminal text-[1.5rem] leading-none text-white">{panel.title}</h3>
+          </div>
+          <button
+            type="button"
+            aria-label="Fechar painel"
+            className="pixel-cut inline-flex h-10 w-10 shrink-0 items-center justify-center border text-fuchsia-50 transition-transform duration-300 hover:-translate-y-0.5"
+            style={{
+              borderColor: "rgba(212, 140, 255, 0.28)",
+              background: "rgba(9, 8, 22, 0.58)",
+              boxShadow: "0 0 16px rgba(168,85,247,0.1)",
+            }}
+            onClick={onClose}
+          >
+            <X className="h-4 w-4" strokeWidth={1.9} />
+          </button>
+        </div>
+
+        <div className="relative min-h-0 overflow-y-auto px-5 pb-6 pt-5 sm:px-6">
+          <div className="grid gap-4 text-slate-200/80">
+            {panel.paragraphs.map((paragraph) => (
+              <p key={paragraph} className="text-sm leading-7 sm:text-[0.98rem]">
+                {paragraph}
+              </p>
+            ))}
+          </div>
+
+          <div className="mt-6 grid gap-3">
+            {panel.bullets.map((bullet) => (
+              <div
+                key={bullet}
+                className="rounded-2xl border px-4 py-3 text-sm leading-6 text-slate-100/88"
+                style={{
+                  borderColor: "rgba(212, 140, 255, 0.18)",
+                  background: "linear-gradient(180deg, rgba(18, 13, 34, 0.82) 0%, rgba(8, 7, 19, 0.72) 100%)",
+                }}
+              >
+                {bullet}
+              </div>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function SiteFooter({
+  onOpenPanel,
+}: {
+  onOpenPanel: (panelId: FooterPanelId) => void;
+}) {
+  return (
+    <footer className="mt-18 w-full max-w-[1280px]">
+      <div
+        className="relative overflow-hidden rounded-[2rem] border"
+        style={{
+          borderColor: "rgba(212, 140, 255, 0.2)",
+          background: "linear-gradient(180deg, rgba(10, 8, 24, 0.96) 0%, rgba(6, 5, 16, 0.94) 100%)",
+          boxShadow: "0 0 36px rgba(90, 32, 144, 0.12), inset 0 0 0 1px rgba(255,255,255,0.04)",
+        }}
+      >
+        <div
+          className="absolute inset-x-0 top-0 h-px"
+          style={{
+            background:
+              "linear-gradient(90deg, transparent 0%, rgba(212, 140, 255, 0.42) 30%, rgba(103, 215, 255, 0.35) 70%, transparent 100%)",
+          }}
+        />
+
+        <div className="grid gap-8 px-5 py-7 sm:px-7 lg:grid-cols-[1.2fr_0.75fr_0.95fr] lg:px-9">
+          <div>
+            <p className="font-display text-[0.56rem] uppercase tracking-[0.22em] text-fuchsia-200/78">
+              Encerramento da jornada
+            </p>
+            <h3 className="mt-3 font-terminal text-[2rem] leading-none text-white sm:text-[2.35rem]">
+              Rodape pronto para publicar
+            </h3>
+            <p className="mt-4 max-w-[34rem] text-sm leading-7 text-slate-200/76 sm:text-[0.98rem]">
+              Este bloco fecha a landing com navegacao util, documentos institucionais acessiveis e sinais de
+              confianca baseados em informacao real, nao em selo decorativo solto.
+            </p>
+
+            <div className="mt-5 flex flex-wrap gap-2.5">
+              {[
+                "Sem checkout nesta landing",
+                "Privacidade e termos visiveis",
+                "Pronto para publicar com HTTPS",
+              ].map((item) => (
+                <span
+                  key={item}
+                  className="inline-flex items-center rounded-full border px-3 py-2 text-[0.62rem] uppercase tracking-[0.16em] text-fuchsia-50/86"
+                  style={{
+                    borderColor: "rgba(212, 140, 255, 0.22)",
+                    background: "rgba(17, 12, 33, 0.72)",
+                  }}
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <p className="font-display text-[0.52rem] uppercase tracking-[0.2em] text-cyan-200/74">Navegacao</p>
+            <div className="mt-4 grid gap-2.5">
+              {[
+                { href: "#universo", label: "Topo do universo" },
+                { href: "#jornada", label: "Resumo da jornada" },
+                { href: "#orbita", label: "Sistema orbital" },
+              ].map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className="inline-flex items-center justify-between rounded-2xl border px-4 py-3 text-sm text-slate-100/86 transition-transform duration-300 hover:-translate-y-0.5"
+                  style={{
+                    borderColor: "rgba(103, 215, 255, 0.16)",
+                    background: "linear-gradient(180deg, rgba(14, 12, 30, 0.82) 0%, rgba(8, 7, 20, 0.74) 100%)",
+                  }}
+                >
+                  <span>{item.label}</span>
+                  <ArrowRight className="h-4 w-4 text-cyan-200/80" strokeWidth={1.7} />
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <p className="font-display text-[0.52rem] uppercase tracking-[0.2em] text-fuchsia-200/74">Institucional</p>
+            <div className="mt-4 grid gap-2.5">
+              {[
+                { id: "privacy" as const, label: "Privacidade", Icon: FileText },
+                { id: "terms" as const, label: "Termos de uso", Icon: ScrollText },
+                { id: "safety" as const, label: "Seguranca e confianca", Icon: Shield },
+              ].map(({ id, label, Icon }) => (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => onOpenPanel(id)}
+                  className="inline-flex items-center justify-between rounded-2xl border px-4 py-3 text-left text-sm text-slate-100/88 transition-transform duration-300 hover:-translate-y-0.5"
+                  style={{
+                    borderColor: "rgba(212, 140, 255, 0.18)",
+                    background: "linear-gradient(180deg, rgba(18, 13, 34, 0.84) 0%, rgba(8, 7, 20, 0.76) 100%)",
+                  }}
+                >
+                  <span className="inline-flex items-center gap-3">
+                    <Icon className="h-4 w-4 text-fuchsia-200/82" strokeWidth={1.75} />
+                    <span>{label}</span>
+                  </span>
+                  <ArrowRight className="h-4 w-4 text-fuchsia-100/70" strokeWidth={1.7} />
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div
+          className="flex flex-col gap-3 border-t px-5 py-4 text-[0.68rem] uppercase tracking-[0.18em] text-slate-200/60 sm:px-7 lg:flex-row lg:items-center lg:justify-between lg:px-9"
+          style={{ borderColor: "rgba(212, 140, 255, 0.12)" }}
+        >
+          <p className="font-display">Pokestor landing pronta para canais, politicas e confianca real</p>
+          <p>Sem selo fake • Sem senha • Publicar com HTTPS</p>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
 function MobileFeatureCard({
   feature,
   active,
@@ -1293,11 +1553,12 @@ function MobileLanding({
 export function PokestorLanding() {
   const [activeFeatureId, setActiveFeatureId] = useState<FeatureId>("pokedex");
   const [dialogFeatureId, setDialogFeatureId] = useState<FeatureId | null>(null);
+  const [footerPanelId, setFooterPanelId] = useState<FooterPanelId | null>(null);
   const activeFeature = features.find((feature) => feature.id === activeFeatureId) ?? features[0];
   const dialogFeature = features.find((feature) => feature.id === dialogFeatureId) ?? null;
 
   useEffect(() => {
-    if (!dialogFeatureId) {
+    if (!dialogFeatureId && !footerPanelId) {
       return;
     }
 
@@ -1305,6 +1566,7 @@ export function PokestorLanding() {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setDialogFeatureId(null);
+        setFooterPanelId(null);
       }
     };
 
@@ -1315,7 +1577,7 @@ export function PokestorLanding() {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [dialogFeatureId]);
+  }, [dialogFeatureId, footerPanelId]);
 
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-[#04010b] text-white">
@@ -1349,8 +1611,19 @@ export function PokestorLanding() {
             setDialogFeatureId(featureId);
           }}
         />
+        <SiteFooter
+          onOpenPanel={(panelId) => {
+            setDialogFeatureId(null);
+            setFooterPanelId(panelId);
+          }}
+        />
       </div>
-      <AnimatePresence>{dialogFeature ? <FeatureDialog activeFeature={dialogFeature} onClose={() => setDialogFeatureId(null)} /> : null}</AnimatePresence>
+      <AnimatePresence>
+        {dialogFeature ? <FeatureDialog activeFeature={dialogFeature} onClose={() => setDialogFeatureId(null)} /> : null}
+      </AnimatePresence>
+      <AnimatePresence>
+        {footerPanelId ? <FooterPanelDialog panelId={footerPanelId} onClose={() => setFooterPanelId(null)} /> : null}
+      </AnimatePresence>
     </main>
   );
 }
