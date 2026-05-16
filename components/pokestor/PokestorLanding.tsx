@@ -36,8 +36,8 @@ type Feature = {
   };
 };
 
-const brandLogoPath = "pokestor-assets/logo.png";
-const coreAssetPath = "pokestor-assets/core.png";
+const brandLogoPath = "pokestor-assets/logo.webp";
+const coreAssetPath = "pokestor-assets/core.webp";
 
 const features: Feature[] = [
   {
@@ -49,7 +49,7 @@ const features: Feature[] = [
     color: "#d48cff",
     secondary: "#7c3aed",
     surface: "#2d1452",
-    assetPath: "pokestor-assets/pokedex.png",
+    assetPath: "pokestor-assets/pokedex.webp",
     assetClassName: "scale-[0.94]",
     orbit: { x: 50, y: 15 },
   },
@@ -62,7 +62,7 @@ const features: Feature[] = [
     color: "#7df9ae",
     secondary: "#0f9f6e",
     surface: "#0d4941",
-    assetPath: "pokestor-assets/captura.png",
+    assetPath: "pokestor-assets/captura.webp",
     orbit: { x: 86, y: 43 },
   },
   {
@@ -74,7 +74,7 @@ const features: Feature[] = [
     color: "#ffcf6d",
     secondary: "#c58620",
     surface: "#62410e",
-    assetPath: "pokestor-assets/exploracao.png",
+    assetPath: "pokestor-assets/exploracao.webp",
     assetClassName: "scale-[1.06]",
     orbit: { x: 74, y: 79 },
   },
@@ -87,7 +87,7 @@ const features: Feature[] = [
     color: "#5bd9ff",
     secondary: "#1d8fd6",
     surface: "#0f3774",
-    assetPath: "pokestor-assets/canal.png",
+    assetPath: "pokestor-assets/canal.webp",
     assetClassName: "scale-[0.96]",
     orbit: { x: 26, y: 79 },
   },
@@ -100,7 +100,7 @@ const features: Feature[] = [
     color: "#ff875f",
     secondary: "#d9485c",
     surface: "#742415",
-    assetPath: "pokestor-assets/eventos.png",
+    assetPath: "pokestor-assets/eventos.webp",
     assetClassName: "scale-[1.06]",
     orbit: { x: 14, y: 43 },
   },
@@ -173,6 +173,8 @@ function FeatureArt({
         src={feature.assetPath}
         alt={feature.title}
         draggable="false"
+        loading="lazy"
+        decoding="async"
         className={`absolute inset-0 h-full w-full object-contain drop-shadow-[0_0_26px_rgba(255,255,255,0.14)] ${feature.assetClassName ?? ""}`}
       />
     </div>
@@ -205,6 +207,9 @@ function TopNav() {
               src={brandLogoPath}
               alt="Pokestor"
               draggable="false"
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
               className="absolute inset-0 h-full w-full origin-left scale-[1.5] object-contain object-left drop-shadow-[0_0_12px_rgba(212,140,255,0.18)] contrast-[1.02] saturate-[1.02]"
             />
           </div>
@@ -620,6 +625,8 @@ function OrbitCore({ compact = false }: { compact?: boolean }) {
           src={coreAssetPath}
           alt="Nucleo orbital"
           draggable="false"
+          loading="eager"
+          decoding="async"
           className="absolute inset-0 h-full w-full object-contain drop-shadow-[0_0_42px_rgba(230,120,255,0.38)] saturate-[1.06] contrast-[1.03]"
         />
       </motion.div>
@@ -665,6 +672,9 @@ function HeroBrand({ activeFeature, compact = false }: { activeFeature: Feature;
           src={brandLogoPath}
           alt="Pokestor"
           draggable="false"
+          loading="eager"
+          decoding="async"
+          fetchPriority="high"
           className={`absolute inset-0 h-full w-full object-contain ${heroLogoShadowClass} ${heroLogoImageClass}`}
         />
       </div>

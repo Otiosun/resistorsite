@@ -17,6 +17,15 @@ const sourceMap = new Map([
 ]);
 
 const outputDirectory = path.resolve(__dirname, "../public/pokestor-assets");
+const assetSettings = new Map([
+  ["logo", { maxWidth: 1600, quality: 92 }],
+  ["core", { maxWidth: 1100, quality: 90 }],
+  ["eventos", { maxWidth: 768, quality: 88 }],
+  ["exploracao", { maxWidth: 768, quality: 88 }],
+  ["canal", { maxWidth: 768, quality: 88 }],
+  ["pokedex", { maxWidth: 768, quality: 88 }],
+  ["captura", { maxWidth: 768, quality: 88 }],
+]);
 
 function isBackgroundPixel(red, green, blue, alpha) {
   if (alpha === 0) {
@@ -147,11 +156,21 @@ for (const [name, sourcePath] of sourceMap) {
   const extractWidth = Math.min(width - left, maxX - minX + 1 + padding * 2);
   const extractHeight = Math.min(height - top, maxY - minY + 1 + padding * 2);
 
-  const outputPath = path.join(outputDirectory, `${name}.png`);
+  const { maxWidth, quality } = assetSettings.get(name) ?? { maxWidth: 768, quality: 88 };
+  const outputPath = path.join(outputDirectory, `${name}.webp`);
 
   await sharp(data, { raw: info })
     .extract({ left, top, width: extractWidth, height: extractHeight })
-    .png()
+    .resize({
+      width: maxWidth,
+      fit: "inside",
+      withoutEnlargement: true,
+    })
+    .webp({
+      quality,
+      alphaQuality: 100,
+      effort: 6,
+    })
     .toFile(outputPath);
 
   console.log(`Salvo em ${outputPath}`);

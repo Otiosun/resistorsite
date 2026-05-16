@@ -25,20 +25,30 @@ export function Starfield() {
     const ctx = canvas.getContext("2d")
     if (!ctx) return
 
+    const isMobile = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 768
+    const pixelRatio = isMobile ? 0.8 : Math.min(window.devicePixelRatio || 1, 1.25)
+    const starDensityDivisor = isMobile ? 14000 : 8000
+    const enableParallax = !isMobile
+    const enableGlow = !isMobile
+    let lastFrameTime = 0
+
     const resizeCanvas = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
+      canvas.style.width = `${window.innerWidth}px`
+      canvas.style.height = `${window.innerHeight}px`
+      canvas.width = Math.floor(window.innerWidth * pixelRatio)
+      canvas.height = Math.floor(window.innerHeight * pixelRatio)
+      ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0)
       generateStars()
     }
 
     const generateStars = () => {
       const stars: Star[] = []
-      const numStars = Math.floor((canvas.width * canvas.height) / 8000)
+      const numStars = Math.floor((window.innerWidth * window.innerHeight) / starDensityDivisor)
       
       for (let i = 0; i < numStars; i++) {
         stars.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
+          x: Math.random() * window.innerWidth,
+          y: Math.random() * window.innerHeight,
           size: Math.random() * 2 + 0.5,
           opacity: Math.random() * 0.8 + 0.2,
           twinkleSpeed: Math.random() * 2 + 1,
@@ -49,6 +59,8 @@ export function Starfield() {
     }
 
     const handleMouseMove = (e: MouseEvent) => {
+      if (!enableParallax) return
+
       mouseRef.current = {
         x: (e.clientX - window.innerWidth / 2) / 50,
         y: (e.clientY - window.innerHeight / 2) / 50,
@@ -56,7 +68,13 @@ export function Starfield() {
     }
 
     const animate = (time: number) => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      if (isMobile && time - lastFrameTime < 32) {
+        animationRef.current = requestAnimationFrame(animate)
+        return
+      }
+
+      lastFrameTime = time
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
       
       const { x: offsetX, y: offsetY } = mouseRef.current
 
@@ -71,7 +89,7 @@ export function Starfield() {
         ctx.fill()
         
         // Add subtle glow for larger stars
-        if (star.size > 1.5) {
+        if (enableGlow && star.size > 1.5) {
           ctx.beginPath()
           ctx.arc(parallaxX, parallaxY, star.size * 2, 0, Math.PI * 2)
           const gradient = ctx.createRadialGradient(
@@ -90,12 +108,16 @@ export function Starfield() {
 
     resizeCanvas()
     window.addEventListener("resize", resizeCanvas)
-    window.addEventListener("mousemove", handleMouseMove)
+    if (enableParallax) {
+      window.addEventListener("mousemove", handleMouseMove)
+    }
     animationRef.current = requestAnimationFrame(animate)
 
     return () => {
       window.removeEventListener("resize", resizeCanvas)
-      window.removeEventListener("mousemove", handleMouseMove)
+      if (enableParallax) {
+        window.removeEventListener("mousemove", handleMouseMove)
+      }
       cancelAnimationFrame(animationRef.current)
     }
   }, [])
